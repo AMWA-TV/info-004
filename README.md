@@ -1,4 +1,4 @@
-# AMWA INFO-XXX: NMOS Implementation Guide for DNS-SD [Work In Progress]
+# AMWA INFO-XXX: NMOS Implementation Guide for DNS-SD \[Work In Progress\]
 
 [![Lint Status](https://github.com/AMWA-TV/nmos-dns-sd-implementation-guide/workflows/Lint/badge.svg)](https://github.com/AMWA-TV/nmos-template/actions?query=workflow%3ALint)
 [![Render Status](https://github.com/AMWA-TV//workflows/Render/badge.svg)](https://github.com/AMWA-TV/nmos-template/actions?query=workflow%3ARender)
@@ -22,5 +22,7 @@ This repository holds the source for this Implementation Guide, part of the fami
 <!-- INTRO-END -->
 
 ## Getting started
+
+See the list of documents below.
 
 There is more information about the NMOS Specifications and their GitHub repos at <https://specs.amwa.tv/nmos>.

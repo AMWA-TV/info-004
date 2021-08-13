@@ -73,7 +73,7 @@ The file should look something like the following, which can be used for the dom
 
 ### Configure the hosts / TXT / SRV file
 
-Now we create the file that contains nameserver, hosts, SRV and TXT records for the `gplab.home.com` domain, which needs to be located and called the same filename, as specified above in the zone config: `/etc/named/zones/db.gplab.home.local`
+Now we create the file that contains nameserver, hosts, `SRV` and `TXT` records for the `gplab.home.com` domain, which needs to be located and called the same filename, as specified above in the zone config: `/etc/named/zones/db.gplab.home.local`
 
 We define the global TTL (Time to live is seconds) for this zone (`gplab.home.com`), as 3600 seconds. `Serial` provides a timestamp that will be used when we synchronize a secondary DNS server later.
 
@@ -111,13 +111,172 @@ _services._dns-sd._udp	PTR	_nmos-register._tcp
 _services._dns-sd._udp	PTR	_nmos-query._tcp
 ```
 
-There should be one PTR record for each instance of the service you wish to advertise. Here we have one Registration API and one Query API:
+There should be one `PTR` record for each instance of the service you wish to advertise. Here we have one Registration API and one Query API:
 
 ```
 _nmos-register._tcp	PTR	reg-api-1._nmos-register._tcp
 _nmos-query._tcp		PTR	qry-api-1._nmos-query._tcp
 ```
 
-If more than one RDS server can be used, then two records can be provided, with a priority setting to enable end-points to make a preferred decision. In this case, the first is prioritized, with the “10” beating “20”.
+If more than one RDS server can be used, then two records can be provided, with a priority setting to enable end-points to make a preferred decision. In this case, the first is prioritized, with the `10` beating `20`.
 
-The TXT records indicate additional metadata relevant to the IS-04 spec.
+The `TXT` records indicate additional metadata relevant to the IS-04 spec.
+
+
+```
+; NMOS RDS services
+; Expected RDS
+reg-api-1._nmos-register._tcp.gplab.home.com.     3600    IN SRV  10      10      80      rds1.gplab.home.com.
+
+; Backup RDS
+reg-api-1._nmos-register._tcp.gplab.home.com.     3600    IN SRV  20      10      80      rds2.gplab.home.com.
+
+reg-api-1._nmos-register._tcp.gplab.home.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
+```
+
+
+Take advice from the RDS vendor about how to set the Priority (`10`) and Weight (`20`) for these `SRV` records. If active-active is available in the RDS servers, then these records can be used to provide load-balancing. In the case below, both records would be served with equal weight.
+
+
+```
+; RDS A
+_nmos-register._tcp.gplab.home.com.     3600    IN SRV  10      20      80      rds1.gplab.home.com.
+
+; RDS B
+_nmos-register._tcp.gplab.home.com.     3600    IN SRV  10      20      80      rds2.gplab.home.com.
+```
+
+
+In all cases above the `SRV` records are identifying a port number of `80`. This would suit default HTTP access, with `443` needed for HTTPS - but again, this would be a question for the RDS vendor.
+
+Lastly we provide the IP addresses for the hosts in the system. This file can of course be expanded to contain names for all the hosts, end-points, and switches in the system, making debugging simpler 
+
+
+```
+; Nameserver records
+dns1.gplab.home.com.            IN      A       192.168.0.18
+dns2.gplab.home.com.            IN      A       192.168.0.20
+rds1.gplab.home.com.            IN      A       192.168.0.50
+rds2.gplab.home.com.            IN      A       192.168.0.51
+```
+
+
+
+### Start the service
+
+Once the files are in place, the service can be started and made permanent (will run after a reload of the server):
+
+
+```
+systemctl restart named
+systemctl enable named
+```
+
+### Enable DNS through the linux firewall
+
+Often, linux default will prevent DNS through the firewall, so you have issues with connectivity to the DNS server now running. The following will enable DNS through the CentOS 7 firewall, and make this permanent:
+
+
+```
+firewall-cmd --permanent --add-port=53/udp
+firewall-cmd --reload
+```
+
+## Testing
+
+From a Linux box / Mac, testing can be carried out once the DNS config on that machine has been updated to point to the new DNS server.
+
+There are a couple of tools that allow the DNS operation to be tested.
+
+We can verify that the host names of the RDS servers are configured:
+
+
+```
+gparistacom:~ gparista.com$ nslookup rds1.gplab.home.com
+Server:		192.168.0.18
+Address:	192.168.0.18#53
+
+Name:	rds1.gplab.home.com
+Address: 192.168.0.50
+```
+
+
+We can see that the lookup was resolved by `192.168.0.18`, and resulted in the address for the `rds1` server being returned as `192.168.0.50`.
+
+The `dig` tool provides a little more info:
+
+```
+gparistacom:~ gparista.com$ dig rds1.gplab.home.com
+
+; <<>> DiG 9.10.6 <<>> rds1.gplab.home.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12178
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;rds1.gplab.home.com.		IN	A
+
+;; ANSWER SECTION:
+rds1.gplab.home.com.	3600	IN	A	192.168.0.50
+
+;; AUTHORITY SECTION:
+gplab.home.com.		3600	IN	NS	dns2.gplab.home.com.
+gplab.home.com.		3600	IN	NS	dns1.gplab.home.com.
+
+;; ADDITIONAL SECTION:
+dns1.gplab.home.com.	3600	IN	A	192.168.0.18
+dns2.gplab.home.com.	3600	IN	A	192.168.0.20
+
+;; Query time: 43 msec
+;; SERVER: 192.168.0.18#53(192.168.0.18)
+;; WHEN: Tue Jul 13 19:58:50 IST 2021
+;; MSG SIZE  rcvd: 134
+```
+
+### Checking the SRV records
+
+We can also use `dig` to check the presence of the `_nmos._register_.tcp` record:
+
+
+```
+gparistacom:~ gparista.com$ dig _nmos-register._tcp.gplab.home.com SRV
+
+; <<>> DiG 9.10.6 <<>> _nmos-register._tcp.gplab.home.com SRV
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 44496
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 2, ADDITIONAL: 5
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;_nmos-register._tcp.gplab.home.com. IN	SRV
+
+;; ANSWER SECTION:
+_nmos-register._tcp.gplab.home.com. 3600 IN SRV	10 10 80 rds1.gplab.home.com.
+_nmos-register._tcp.gplab.home.com. 3600 IN SRV	20 10 80 rds2.gplab.home.com.
+
+;; AUTHORITY SECTION:
+gplab.home.com.		3600	IN	NS	dns2.gplab.home.com.
+gplab.home.com.		3600	IN	NS	dns1.gplab.home.com.
+
+;; ADDITIONAL SECTION:
+rds1.gplab.home.com.	3600	IN	A	192.168.0.50
+rds2.gplab.home.com.	3600	IN	A	192.168.0.51
+dns1.gplab.home.com.	3600	IN	A	192.168.0.18
+dns2.gplab.home.com.	3600	IN	A	192.168.0.20
+
+;; Query time: 41 msec
+;; SERVER: 192.168.0.18#53(192.168.0.18)
+;; WHEN: Tue Jul 13 20:00:53 IST 2021
+;; MSG SIZE  rcvd: 243
+```
+
+## Backup DNS (BIND) Server
+
+To provide resilience, a secondary DNS server should be provisioned. end-points should have both DNS IP addresses configured, allowing them to use the backup DNS server, if the primary is no longer available.
+
+BIND allows primary / secondary pairing, so that the zones and hosts configuration can be automatically updated on the secondary device, reducing the amount of duplication.
