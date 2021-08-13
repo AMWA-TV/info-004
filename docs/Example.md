@@ -40,22 +40,31 @@ forwarders { 192.168.0.19; }; #IP of upstream nameserver(s)
 recursion yes;
 ```
 
-### Configure the Zones file
+### Add the gplab.home.com zone
 
-This file provides information about the zones (domains) that you want the DNS server to support - for this example, we’ll assume a single zone.
+We will be serving information about our NMOS RDS servers from the domain, 'gplab.home.com'.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for information about this zone.  Zone information is kept in `/etc/named.conf` if you are running CentOS 7, or in `/etc/named.conf.local` if you are running Debian or Ubuntu distributions.  To add the zone, enter the information below in the appropriate configuration file for your distribution.
 
-Create and edit the file we previously referenced in the /etc/named.conf file ( `include "/etc/named/named.conf.local";)`
+```
+zone "gplab.home.com" {
+        type master;
+        file "/etc/bind/zones/db.gplab.home.local";
+};
+```
 
-The file should look something like the following, which can be used for the domain “gplab.home.com”, and references a file for this zone: `/etc/named/zones/db.gplab.home.local`
+You will have to restart BIND for the server to recognize the new zone.
+
+### Configure the Zone file
+
+You will notice the line, `file "/etc/bind/zones/db.gplab.home.local";` in the configuration information above.  This file provides information about the zones (domains) that you want the DNS server to support - for this example, we’ll assume a single zone.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones`, and then you will need to create the file `db.gplab.home.local` in that directory.
 
 ### Configure the hosts / TXT / SRV file
 
-Now we create the file that contains nameserver, hosts, `SRV` and `TXT` records for the `gplab.home.com` domain, which needs to be located and called the same filename, as specified above in the zone config: `/etc/named/zones/db.gplab.home.local`
+Now we create the file `/etc/bind/zones/db.gplab.home.local` that contains nameserver, hosts, `SRV` and `TXT` records for the `gplab.home.com` domain.  Begin by opening this file and entering the information below.
 
 We define the global TTL (Time to live is seconds) for this zone (`gplab.home.com`), as 3600 seconds. `Serial` provides a timestamp that will be used when we synchronize a secondary DNS server later.
 
 ```
-TTL 3600
+$TTL 3600
 @       IN      SOA     dns1.gplab.home.com. admin.gplab.home.com. (
            20210713     ; Serial
                3600     ; Refresh
