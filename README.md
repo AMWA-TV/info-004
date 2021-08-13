@@ -18,7 +18,6 @@ This repository holds the source for this Implementation Guide, part of the fami
 ### How does it work?
 
 - TBC
-- TBC
 
 <!-- INTRO-END -->
 
