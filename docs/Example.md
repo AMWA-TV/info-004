@@ -63,13 +63,9 @@ forwarders { 192.168.0.19; }; #IP of upstream nameserver(s)
 recursion yes;
 ```
 
-### Configure the Zones file
+### Configure the Zone file
 
-This file provides information about the zones (domains) that you want the DNS server to support - for this example, we’ll assume a single zone.
-
-Create and edit the file we previously referenced in the /etc/named.conf file ( `include "/etc/named/named.conf.local";)`
-
-The file should look something like the following, which can be used for the domain “gplab.home.com”, and references a file for this zone: `/etc/named/zones/db.gplab.home.local`
+You will notice the line, `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`, and then you will need to create the file `db.gplab.com`.  The file should look something like the following, which can be used for the domain “gplab.com”.
 
 ### Configure the hosts / TXT / SRV file
 
