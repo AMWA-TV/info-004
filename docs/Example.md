@@ -69,17 +69,17 @@ This file provides information about the zones (domains) that you want the DNS s
 
 Create and edit the file we previously referenced in the /etc/named.conf file ( `include "/etc/named/named.conf.local";)`
 
-The file should look something like the following, which can be used for the domain “gplab.home.com”, and references a file for this zone: `/etc/named/zones/db.gplab.home.local`
+The file should look something like the following, which can be used for the domain “gplab.com”, and references a file for this zone: `/etc/named/zones/db.gplab.local`
 
 ### Configure the hosts / TXT / SRV file
 
-Now we create the file that contains nameserver, hosts, `SRV` and `TXT` records for the `gplab.home.com` domain, which needs to be located and called the same filename, as specified above in the zone config: `/etc/named/zones/db.gplab.home.local`
+Now we create the file that contains nameserver, hosts, `SRV` and `TXT` records for the `gplab.com` domain, which needs to be located and called the same filename, as specified above in the zone config: `/etc/named/zones/db.gplab.local`
 
-We define the global TTL (Time to live is seconds) for this zone (`gplab.home.com`), as 3600 seconds. `Serial` provides a timestamp that will be used when we synchronize a secondary DNS server later.
+We define the global TTL (Time to live is seconds) for this zone (`gplab.com`), as 3600 seconds. `Serial` provides a timestamp that will be used when we synchronize a secondary DNS server later.
 
 ```
 TTL 3600
-@       IN      SOA     dns1.gplab.home.com. admin.gplab.home.com. (
+@       IN      SOA     dns1.gplab.com. admin.gplab.com. (
            20210713     ; Serial
                3600     ; Refresh
                 600     ; Retry
@@ -91,8 +91,8 @@ Then we define our main and backup DNS server for this zone/domain. End-points s
 
 ```
 ; DNS servers
-        IN      NS      dns1.gplab.home.com.
-        IN      NS      dns2.gplab.home.com.
+        IN      NS      dns1.gplab.com.
+        IN      NS      dns2.gplab.com.
 ```
 
 The NMOS register services are defined:
@@ -126,12 +126,12 @@ The `TXT` records indicate additional metadata relevant to the IS-04 spec.
 ```
 ; NMOS RDS services
 ; Expected RDS
-reg-api-1._nmos-register._tcp.gplab.home.com.     3600    IN SRV  10      10      80      rds1.gplab.home.com.
+reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80      rds1.gplab.com.
 
 ; Backup RDS
-reg-api-1._nmos-register._tcp.gplab.home.com.     3600    IN SRV  20      10      80      rds2.gplab.home.com.
+reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  20      10      80      rds2.gplab.com.
 
-reg-api-1._nmos-register._tcp.gplab.home.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
+reg-api-1._nmos-register._tcp.gplab.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
 
@@ -140,10 +140,10 @@ Take advice from the RDS vendor about how to set the Priority (`10`) and Weight 
 
 ```
 ; RDS A
-_nmos-register._tcp.gplab.home.com.     3600    IN SRV  10      20      80      rds1.gplab.home.com.
+_nmos-register._tcp.gplab.com.     3600    IN SRV  10      20      80      rds1.gplab.com.
 
 ; RDS B
-_nmos-register._tcp.gplab.home.com.     3600    IN SRV  10      20      80      rds2.gplab.home.com.
+_nmos-register._tcp.gplab.com.     3600    IN SRV  10      20      80      rds2.gplab.com.
 ```
 
 
@@ -154,10 +154,10 @@ Lastly we provide the IP addresses for the hosts in the system. This file can of
 
 ```
 ; Nameserver records
-dns1.gplab.home.com.            IN      A       192.168.0.18
-dns2.gplab.home.com.            IN      A       192.168.0.20
-rds1.gplab.home.com.            IN      A       192.168.0.50
-rds2.gplab.home.com.            IN      A       192.168.0.51
+dns1.gplab.com.            IN      A       192.168.0.18
+dns2.gplab.com.            IN      A       192.168.0.20
+rds1.gplab.com.            IN      A       192.168.0.50
+rds2.gplab.com.            IN      A       192.168.0.51
 ```
 
 
@@ -192,11 +192,11 @@ We can verify that the host names of the RDS servers are configured:
 
 
 ```
-gparistacom:~ gparista.com$ nslookup rds1.gplab.home.com
+gparistacom:~ gparista.com$ nslookup rds1.gplab.com
 Server:		192.168.0.18
 Address:	192.168.0.18#53
 
-Name:	rds1.gplab.home.com
+Name:	rds1.gplab.com
 Address: 192.168.0.50
 ```
 
@@ -206,9 +206,9 @@ We can see that the lookup was resolved by `192.168.0.18`, and resulted in the a
 The `dig` tool provides a little more info:
 
 ```
-gparistacom:~ gparista.com$ dig rds1.gplab.home.com
+gparistacom:~ gparista.com$ dig rds1.gplab.com
 
-; <<>> DiG 9.10.6 <<>> rds1.gplab.home.com
+; <<>> DiG 9.10.6 <<>> rds1.gplab.com
 ;; global options: +cmd
 ;; Got answer:
 ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12178
@@ -217,18 +217,18 @@ gparistacom:~ gparista.com$ dig rds1.gplab.home.com
 ;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096
 ;; QUESTION SECTION:
-;rds1.gplab.home.com.		IN	A
+;rds1.gplab.com.		IN	A
 
 ;; ANSWER SECTION:
-rds1.gplab.home.com.	3600	IN	A	192.168.0.50
+rds1.gplab.com.	3600	IN	A	192.168.0.50
 
 ;; AUTHORITY SECTION:
-gplab.home.com.		3600	IN	NS	dns2.gplab.home.com.
-gplab.home.com.		3600	IN	NS	dns1.gplab.home.com.
+gplab.com.		3600	IN	NS	dns2.gplab.com.
+gplab.com.		3600	IN	NS	dns1.gplab.com.
 
 ;; ADDITIONAL SECTION:
-dns1.gplab.home.com.	3600	IN	A	192.168.0.18
-dns2.gplab.home.com.	3600	IN	A	192.168.0.20
+dns1.gplab.com.	3600	IN	A	192.168.0.18
+dns2.gplab.com.	3600	IN	A	192.168.0.20
 
 ;; Query time: 43 msec
 ;; SERVER: 192.168.0.18#53(192.168.0.18)
@@ -242,9 +242,9 @@ We can also use `dig` to check the presence of the `_nmos._register_.tcp` record
 
 
 ```
-gparistacom:~ gparista.com$ dig _nmos-register._tcp.gplab.home.com SRV
+gparistacom:~ gparista.com$ dig _nmos-register._tcp.gplab.com SRV
 
-; <<>> DiG 9.10.6 <<>> _nmos-register._tcp.gplab.home.com SRV
+; <<>> DiG 9.10.6 <<>> _nmos-register._tcp.gplab.com SRV
 ;; global options: +cmd
 ;; Got answer:
 ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 44496
@@ -253,21 +253,21 @@ gparistacom:~ gparista.com$ dig _nmos-register._tcp.gplab.home.com SRV
 ;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096
 ;; QUESTION SECTION:
-;_nmos-register._tcp.gplab.home.com. IN	SRV
+;_nmos-register._tcp.gplab.com. IN	SRV
 
 ;; ANSWER SECTION:
-_nmos-register._tcp.gplab.home.com. 3600 IN SRV	10 10 80 rds1.gplab.home.com.
-_nmos-register._tcp.gplab.home.com. 3600 IN SRV	20 10 80 rds2.gplab.home.com.
+_nmos-register._tcp.gplab.com. 3600 IN SRV	10 10 80 rds1.gplab.com.
+_nmos-register._tcp.gplab.com. 3600 IN SRV	20 10 80 rds2.gplab.com.
 
 ;; AUTHORITY SECTION:
-gplab.home.com.		3600	IN	NS	dns2.gplab.home.com.
-gplab.home.com.		3600	IN	NS	dns1.gplab.home.com.
+gplab.com.		3600	IN	NS	dns2.gplab.com.
+gplab.com.		3600	IN	NS	dns1.gplab.com.
 
 ;; ADDITIONAL SECTION:
-rds1.gplab.home.com.	3600	IN	A	192.168.0.50
-rds2.gplab.home.com.	3600	IN	A	192.168.0.51
-dns1.gplab.home.com.	3600	IN	A	192.168.0.18
-dns2.gplab.home.com.	3600	IN	A	192.168.0.20
+rds1.gplab.com.	3600	IN	A	192.168.0.50
+rds2.gplab.com.	3600	IN	A	192.168.0.51
+dns1.gplab.com.	3600	IN	A	192.168.0.18
+dns2.gplab.com.	3600	IN	A	192.168.0.20
 
 ;; Query time: 41 msec
 ;; SERVER: 192.168.0.18#53(192.168.0.18)
