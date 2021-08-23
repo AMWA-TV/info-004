@@ -33,29 +33,6 @@ sudo yum install bind bind-utils
 
 The basic BIND install provides a general config file which you can find at `/etc/named.conf`
 
-Edit this file to add the following ACL (Access Control List) above the config section, defining who can access the DNS server; Devices on 192.168.0.0/24, locally attached networks, and the local machine. Add more networks as needed.
-
-```
-acl AllowQuery {
-        192.168.0.0/24;
-        localhost;
-        localnets;
-};
-```
-
-Then adjust the `allow-query` section within the `options` section to reference this ACL.
-
-```
-options {
-allow-query     { AllowQuery; };
-```
-
-Also within the `options` section, define which network interfaces to allow DNS requests on:
-
-```
-listen-on port 53 { 127.0.0.1; 192.168.0.18; };
-```
-
 If desired, configure the next upstream DNS server - this is likely to be a corporate DNS service on the Internet the internet (`8.8.8.8`, or `1.1.1.1` for example) or might be in the local lab.
 
 ```
@@ -63,13 +40,9 @@ forwarders { 192.168.0.19; }; #IP of upstream nameserver(s)
 recursion yes;
 ```
 
-### Configure the Zones file
+### Configure the Zone file
 
-This file provides information about the zones (domains) that you want the DNS server to support - for this example, we’ll assume a single zone.
-
-Create and edit the file we previously referenced in the /etc/named.conf file ( `include "/etc/named/named.conf.local";)`
-
-The file should look something like the following, which can be used for the domain “gplab.com”, and references a file for this zone: `/etc/named/zones/db.gplab.local`
+You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`, and then you will need to create the file `db.gplab.com`.  The file should look something like the following, which can be used for the domain `gplab.com`.
 
 ### Configure the hosts / TXT / SRV file
 
