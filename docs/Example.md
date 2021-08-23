@@ -65,7 +65,7 @@ recursion yes;
 
 ### Add the example zone to the DNS server
 
-In this example, we will be working with the domain, 'gplab.com'.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this zone.  Zone information is kept in `/etc/named.conf` (CentOS 7), or in `/etc/named.conf.local` (Debian/Ubuntu).  To add the zone, enter the information below in the appropriate configuration file for your distribution.
+In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this zone.  Zone information is kept in `/etc/named.conf` (CentOS 7), or in `/etc/named.conf.local` (Debian/Ubuntu).  To add the zone, enter the information below in the appropriate configuration file for your distribution.
 
 ```
 zone "gplab.com" {
