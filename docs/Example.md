@@ -40,6 +40,17 @@ forwarders { 192.168.0.19; }; #IP of upstream nameserver(s)
 recursion yes;
 ```
 
+### Add the example zone to the DNS server
+
+In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this zone.  Zone information is kept in `/etc/named.conf` (CentOS 7), or in `/etc/named.conf.local` (Debian/Ubuntu).  To add the zone, enter the information below in the appropriate configuration file for your distribution.
+
+```
+zone "gplab.com" {
+        type master;
+        file "/etc/bind/zones/db.gplab.com";
+};
+```
+
 ### Configure the Zone file
 
 You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`, and then you will need to create the file `db.gplab.com`.  The file should look something like the following, which can be used for the domain `gplab.com`.
