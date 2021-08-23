@@ -9,17 +9,16 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 ### What does it do?
 
--  TBC
-
+-   DNS-DS provides a simple and flexible method to discover NMOS RDS Services.
 ### Why does it matter?
 
-- TBC
+- The NMOS RDS provides all information about NMOS nodes, devices, APIs. It must be located in order for a NNMOS component to register itself for discovery by other NMOS components or for discovering other NMOS components on a network. 
 
 ### How does it work?
 
-- TBC
-
-<!-- INTRO-END -->
+- DNS-DS adds in Service Lookup to a DNS Server. This allows RDS(s) to be listed under names in a configuration file and clients can query the DNS for the particular Service required. In the present case this would be a query for the IP address of RDS Primary and potentially secondary services.
+- 
+!-- INTRO-END -->
 
 ## Getting started
 
