@@ -33,29 +33,6 @@ sudo yum install bind bind-utils
 
 The basic BIND install provides a general config file which you can find at `/etc/named.conf`
 
-Edit this file to add the following ACL (Access Control List) above the config section, defining who can access the DNS server; Devices on 192.168.0.0/24, locally attached networks, and the local machine. Add more networks as needed.
-
-```
-acl AllowQuery {
-        192.168.0.0/24;
-        localhost;
-        localnets;
-};
-```
-
-Then adjust the `allow-query` section within the `options` section to reference this ACL.
-
-```
-options {
-allow-query     { AllowQuery; };
-```
-
-Also within the `options` section, define which network interfaces to allow DNS requests on:
-
-```
-listen-on port 53 { 127.0.0.1; 192.168.0.18; };
-```
-
 If desired, configure the next upstream DNS server - this is likely to be a corporate DNS service on the Internet the internet (`8.8.8.8`, or `1.1.1.1` for example) or might be in the local lab.
 
 ```
