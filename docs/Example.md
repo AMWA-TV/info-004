@@ -65,7 +65,7 @@ recursion yes;
 
 ### Configure the Zone file
 
-You will notice the line, `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`, and then you will need to create the file `db.gplab.com`.  The file should look something like the following, which can be used for the domain “gplab.com”.
+You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`, and then you will need to create the file `db.gplab.com`.  The file should look something like the following, which can be used for the domain `gplab.com`.
 
 ### Configure the hosts / TXT / SRV file
 
