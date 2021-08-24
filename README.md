@@ -16,7 +16,11 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 ### How does it work?
 
-- DNS-DS adds in Service Lookup to a DNS Server. This allows RDS(s) to be listed under names in a configuration file and clients can query the DNS for the particular Service required. In the present case this would be a query for the IP address of RDS Primary and potentially secondary services.
+The examples in this Implementation Guide add records to a BIND9 DNS server such that the server responds to standardized queries with information that indicates:
+
+- that the DNS server provides Service Discovery
+- where the NMOS RDS may be found on the network.
+
 
 <!-- INTRO-END -->
 
