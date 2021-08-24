@@ -29,7 +29,7 @@ BIND9 can be installed from the linux command line (as root), with the following
 sudo yum install bind bind-utils
 ```
 
-### Add the example zone to the DNS server
+### Adding the example zone to the DNS server
 
 In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this zone.  Zone information is kept in `/etc/named.conf` (CentOS 7), or in `/etc/named.conf.local` (Debian/Ubuntu).  To add the zone, enter the information below in the appropriate configuration file for your distribution.
 
@@ -40,11 +40,11 @@ zone "gplab.com" {
 };
 ```
 
-### Configure the Zone file
+### Configuring the Zone file
 
 You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`, and then you will need to create the file `db.gplab.com`.  The file should look something like the following, which can be used for the domain `gplab.com`.
 
-### Configure the hosts / TXT / SRV file
+### Configuring the hosts / TXT / SRV file
 
 Now we create the file that contains nameserver, hosts, `SRV` and `TXT` records for the `gplab.com` domain, which needs to be located and called the same filename, as specified above in the zone config: `/etc/named/zones/db.gplab.local`
 
@@ -135,7 +135,7 @@ rds2.gplab.com.            IN      A       192.168.0.51
 
 
 
-### Start the service
+### Starting the service
 
 Once the files are in place, the service can be started and made permanent (will run after a reload of the server):
 
@@ -145,7 +145,7 @@ systemctl restart named
 systemctl enable named
 ```
 
-### Enable DNS through the linux firewall
+### Enabling DNS through the linux firewall
 
 Often, linux default will prevent DNS through the firewall, so you have issues with connectivity to the DNS server now running. The following will enable DNS through the CentOS 7 firewall, and make this permanent:
 
@@ -248,7 +248,7 @@ dns2.gplab.com.	3600	IN	A	192.168.0.20
 ;; MSG SIZE  rcvd: 243
 ```
 
-## Backup DNS (BIND) Server
+## Backing Up DNS (BIND) Servers
 
 To provide resilience, a secondary DNS server should be provisioned. end-points should have both DNS IP addresses configured, allowing them to use the backup DNS server, if the primary is no longer available.
 
