@@ -51,7 +51,7 @@ Now we create the file that contains nameserver, hosts, `SRV` and `TXT` records 
 We define the global TTL (Time to live is seconds) for this zone (`gplab.com`), as 3600 seconds. `Serial` provides a timestamp that will be used when we synchronize a secondary DNS server later.
 
 ```
-TTL 3600
+$TTL 3600
 @       IN      SOA     dns1.gplab.com. admin.gplab.com. (
            20210713     ; Serial
                3600     ; Refresh
