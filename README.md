@@ -9,15 +9,19 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 ### What does it do?
 
--  TBC
+-  DNS Service Discovery (DNS-SD) provides a simple and flexible method to discover NMOS Registration and Discovery Server (RDS) Services.
 
 ### Why does it matter?
 
-- TBC
+- The NMOS RDS provides all information about NMOS nodes, devices, APIs. It must be located in order for a NNMOS component to register itself for discovery by other NMOS components or for discovering other NMOS components on a network. 
 
 ### How does it work?
 
-- TBC
+The examples in this Implementation Guide add records to a BIND9 DNS server such that the server responds to standardized queries with information that indicates:
+
+- that the DNS server provides Service Discovery
+- where the NMOS RDS may be found on the network.
+
 
 <!-- INTRO-END -->
 
