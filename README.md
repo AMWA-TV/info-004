@@ -13,7 +13,7 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 ### Why does it matter?
 
-- The NMOS RDS provides all information about NMOS nodes, devices, APIs. It must be located in order for a NNMOS component to register itself for discovery by other NMOS components or for discovering other NMOS components on a network. 
+- The NMOS RDS provides information about NMOS nodes, devices, and APIs. There must be a common way to locate the RDS in order for an NMOS component to register itself for discovery by other NMOS components. 
 
 ### How does it work?
 
