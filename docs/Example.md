@@ -68,7 +68,7 @@ Then we define our main and backup DNS server for this zone/domain. End-points s
         IN      NS      dns2.gplab.com.
 ```
 
-The NMOS register services are defined:
+DNS server records added to indicate the server supports Service Discovery:
 
 ```
 ; These lines indicate to clients that this server supports DNS Service
@@ -77,9 +77,10 @@ b._dns-sd._udp	IN	PTR	@
 lb._dns-sd._udp	IN	PTR	@
 ```
 
-These lines indicate to clients which service types this server may advertise:
+The NMOS register services are defined:
 
 ```
+; These lines indicate to clients which NMOS service types this server advertises:
 _services._dns-sd._udp	PTR	_nmos-register._tcp
 _services._dns-sd._udp	PTR	_nmos-query._tcp
 ```
@@ -93,9 +94,6 @@ _nmos-query._tcp		PTR	qry-api-1._nmos-query._tcp
 
 If more than one RDS server can be used, then two records can be provided, with a priority setting to enable end-points to make a preferred decision. In this case, the first is prioritized, with the `10` beating `20`.
 
-The `TXT` records indicate additional metadata relevant to the IS-04 spec.
-
-
 ```
 ; NMOS RDS services
 ; Expected RDS
@@ -103,7 +101,12 @@ reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80 
 
 ; Backup RDS
 reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  20      10      80      rds2.gplab.com.
+```
 
+A TXT record providing information relevant to the IS-04 specification
+
+```
+; Additional metadata relevant to the IS-04 specification.
 reg-api-1._nmos-register._tcp.gplab.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
