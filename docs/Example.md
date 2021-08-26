@@ -160,7 +160,7 @@ firewall-cmd --reload
 
 ## Testing
 
-From a Linux box / Mac, testing can be carried out once the DNS config on that machine has been updated to point to the new DNS server.
+You can test the functionality of the new DNS server right from the server itself.  You can also run these tests from a Linux box or Mac by setting the `nameserver` portion of the Linux or Mac box network configuration to point to your new DNS server.  If you run the tests below from a separate computer, omit `localhost` or `@locahost` from the commands below.
 
 There are a couple of tools that allow the DNS operation to be tested.
 
@@ -168,7 +168,7 @@ We can verify that the host names of the RDS servers are configured:
 
 
 ```
-gparistacom:~ gparista.com$ nslookup rds1.gplab.com
+gparistacom:~ gparista.com$ nslookup rds1.gplab.com locahost
 Server:		192.168.0.18
 Address:	192.168.0.18#53
 
@@ -182,7 +182,7 @@ We can see that the lookup was resolved by `192.168.0.18`, and resulted in the a
 The `dig` tool provides a little more info:
 
 ```
-gparistacom:~ gparista.com$ dig rds1.gplab.com
+gparistacom:~ gparista.com$ dig @localhost rds1.gplab.com
 
 ; <<>> DiG 9.10.6 <<>> rds1.gplab.com
 ;; global options: +cmd
@@ -218,7 +218,7 @@ We can also use `dig` to check the presence of the `_nmos._register_.tcp` record
 
 
 ```
-gparistacom:~ gparista.com$ dig _nmos-register._tcp.gplab.com SRV
+gparistacom:~ gparista.com$ dig @localhost _nmos-register._tcp.gplab.com SRV
 
 ; <<>> DiG 9.10.6 <<>> _nmos-register._tcp.gplab.com SRV
 ;; global options: +cmd
