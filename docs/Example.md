@@ -5,7 +5,7 @@
 
 {:toc}
 
-There are many DNS server options, but for the purposes of this doc, for the MDS (Media DNS Server), we’ll use BIND on Linux, a very popular open source solution.
+There are many DNS server options, but for the purposes of this guide we will use BIND on Linux, a very popular open source solution.
 
 What services does the NMOS RDS need to serve? From the [AMWA NMOS IS-04 specification](https://specs.amwa.tv/is-04/releases/v1.3.1/docs/3.0._Discovery.html), the following services should be configured:
 
@@ -18,7 +18,7 @@ The following service does need not to be configured:
 
 ## DNS Build / Configuration
 
-This guide has been tested on several different versions of Linux; CentOS 7, Ubuntu 16.04, and Raspbian (Buster).  These instructions should work for Debian Linux as well, although that has not been tested.
+This guide has been tested on CentOS 7, Ubuntu 16.04, and Raspbian (Buster).  These instructions should work for Debian and may other versions of Linux as well.
 
 We assume that the Linux installation has been completed, the server has a static IP address, and that it has access to the Internet.  (The Internet connection may be disconnected once the BIND installation is complete.)
 
@@ -39,7 +39,7 @@ apt update && apt install bind9 bind-utils
 
 ### Adding the example zone to the DNS server
 
-In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this zone.  Zone information is kept in the following directories, depending upon your Linux version:
+In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this domain (referred to as a 'zone' in BIND).  Zone information is kept in the following directories, depending upon your Linux version:
 
 CentOS 7 `/etc/named.conf`
 Ubuntu/Raspbian `/etc/named.conf.local`
@@ -79,14 +79,14 @@ $TTL 3600
              604800 )   ; Negative Cache TTL
 ```
 
-Then we define our DNS server for this zone/domain. End-points should be configured with this DNS server.
+Then we define our DNS server for this zone. End-points should be configured with this DNS server.
 
 ```
 ; DNS server
         IN      NS      dns.gplab.com.
 ```
 
-We add these PTR records to indicate the server supports Service Discovery.  Clients looking for DNS-SD support will query the server for these specific records.  (`b` is for `browse`.  `lb` is for `legacy browse`.)
+We add the following PTR records to indicate the server supports Service Discovery.  Clients looking for DNS-SD support will query the server for these specific records.  (`b` is for `browse`.  `lb` is for `legacy browse`.)
 
 ```
 ; These lines indicate to clients that this server supports DNS Service Discovery
@@ -109,11 +109,12 @@ _nmos-register._tcp	PTR	reg-api-1._nmos-register._tcp
 _nmos-query._tcp	PTR	qry-api-1._nmos-query._tcp
 ```
 
-Now we add a record that indicate specifically which server provides the NMOS services.  In this case, it is `rds1.gplab.com`.
+Now we add a record that indicates specifically where to find the register and query APIs.  In this case, it is `rds1.gplab.com`.
 
 ```
 ; NMOS RDS services
 reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80      rds1.gplab.com.
+qry-api-1._nmos-query._tcp.gplab.com.        3600    IN SRV  10      10      80      rds1.gplab.com.
 ```
 
 We add a TXT record which provides information relevant to the IS-04 specification
@@ -123,10 +124,11 @@ We add a TXT record which provides information relevant to the IS-04 specificati
 reg-api-1._nmos-register._tcp.gplab.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
-We add a record which associated the NMOS register with the RDS.
+We add a records which associates the NMOS register and NMOS query with the RDS.
 ```
 ; RDS
 _nmos-register._tcp.gplab.com.     3600    IN SRV  10      20      80      rds1.gplab.com.
+_nmos-query._tcp.gplab.com.        3600    IN SRV  10      20      80      rds1.gplab.com.
 ```
 
 In all cases above the `SRV` records are identifying a port number of `80`. This would suit default HTTP access, with `443` needed for HTTPS - but again, this would be a question for the RDS vendor.
