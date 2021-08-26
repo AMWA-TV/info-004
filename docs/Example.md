@@ -18,20 +18,33 @@ The following service does need not to be configured:
 
 ## DNS Build / Configuration
 
-We’ll be running BIND on a CentOS 7 installation. We’ll assume that the CentOS 7 installation has been completed, and has a static IP address, with access to the Internet, which we’ll use for initial installation of BIND (it can be disconnected later)
+This guide has been tested on several different versions of Linux; CentOS 7, Ubuntu 16.04, and Raspbian (Buster).  These instructions should work for Debian Linux as well, although that has not been tested.
+
+We assume that the Linux installation has been completed, the server has a static IP address, and that it has access to the Internet.  (The Internet connection may be disconnected once the BIND installation is complete.)
 
 
 ### Installing BIND
 
 BIND9 can be installed from the linux command line (as root), with the following:
 
+CentOS 7
 ```
 sudo yum install bind bind-utils
 ```
 
+Ubuntu/Raspbian
+```
+apt update && apt install bind9 bind-utils
+```
+
 ### Adding the example zone to the DNS server
 
-In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this zone.  Zone information is kept in `/etc/named.conf` (CentOS 7), or in `/etc/named.conf.local` (Debian/Ubuntu).  To add the zone, enter the information below in the appropriate configuration file for your distribution.
+In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this zone.  Zone information is kept in the following directories, depending upon your Linux version:
+
+CentOS 7 `/etc/named.conf`
+Ubuntu/Raspbian `/etc/named.conf.local`
+
+To add the zone, enter the information below in the appropriate configuration file for your distribution.
 
 ```
 zone "gplab.com" {
@@ -42,13 +55,19 @@ zone "gplab.com" {
 
 ### Configuring the Zone file
 
-You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`, and then you will need to create the file `db.gplab.com`.  The file should look something like the following, which can be used for the domain `gplab.com`.
+You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`.
+
+```
+gp@gplab.com:~ # cd /etc/bind
+gp@gplab.com:~ # mkdir zones
+gp@gplab.com:~ # cd zones
+```
+
+Use any text editor to create the file `db.gplab.com` in the `zones` directory based upon the directions below.
 
 ### Configuring the hosts / TXT / SRV file
 
-Now we create the file that contains nameserver, hosts, `SRV` and `TXT` records for the `gplab.com` domain, which needs to be located and called the same filename, as specified above in the zone config: `/etc/named/zones/db.gplab.local`
-
-We define the global TTL (Time to live is seconds) for this zone (`gplab.com`), as 3600 seconds. `Serial` provides a timestamp that will be used when we synchronize a secondary DNS server later.
+We begin by defining several required DNS parameters.
 
 ```
 $TTL 3600
@@ -142,10 +161,16 @@ rds2.gplab.com.            IN      A       192.168.0.51
 
 Once the files are in place, the service can be started and made permanent (will run after a reload of the server):
 
-
+CentOS 7
 ```
 systemctl restart named
 systemctl enable named
+```
+
+Ubuntu/Raspbian
+```
+systemctl restart bind9
+systemctl enable bind9
 ```
 
 ### Enabling DNS through the linux firewall
