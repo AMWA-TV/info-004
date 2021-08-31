@@ -122,6 +122,7 @@ We add a TXT record which provides information relevant to the IS-04 specificati
 ```
 ; Additional metadata relevant to the IS-04 specification.
 reg-api-1._nmos-register._tcp.gplab.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
+qry-api-1._nmos-query._tcp.gplab.com.           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
 We add a records which associates the NMOS register and NMOS query with the RDS.
