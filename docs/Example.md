@@ -32,17 +32,22 @@ CentOS 7
 sudo yum install bind bind-utils
 ```
 
-Ubuntu/Raspbian
+Ubuntu
 ```
 apt update && apt install bind9 bind-utils
+```
+
+Raspbian
+```
+apt update && apt install bind9
 ```
 
 ### Adding the example zone to the DNS server
 
 In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this domain (referred to as a 'zone' in BIND).  Zone information is kept in the following directories, depending upon your Linux version:
 
-CentOS 7 `/etc/named.conf`
-Ubuntu/Raspbian `/etc/named.conf.local`
+CentOS 7 `/etc/bind/named.conf`
+Ubuntu/Raspbian `/etc/bind/named.conf.local`
 
 To add the zone, enter the information below in the appropriate configuration file for your distribution.
 
