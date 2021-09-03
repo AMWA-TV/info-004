@@ -19,8 +19,8 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 The examples in this Implementation Guide add records to a BIND9 DNS server such that the server responds to standardized queries with information that indicates:
 
-- that the DNS server provides Service Discovery,
-- where the NMOS RDS may be found on the network.
+- The fact that the DNS server provides Service Discovery
+- Where the NMOS RDS may be found on the network
 
 
 <!-- INTRO-END -->
