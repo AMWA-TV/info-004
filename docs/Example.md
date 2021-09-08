@@ -1,4 +1,5 @@
 # Practical Implementation Example
+This is a practical example of how to implement DNS-SD on a Linux system using the BIND9 DNS server.  It is meant to provide a relatively simple, easy-to-follow "recipe" for getting DNS-SD up and running in a short period of time.  It is not intended to be a tutorial article, and therefore, it excludes explanation regarding DNS parameters, or why they are being used.  A search of the Internet will turn up many excellent tutorials for DNS and DNS-SD, and of course, a number of excellent books have been written on the subject of DNS and specifically BIND9.  We hope you find this how-to guide to be useful.
 {:.no_toc}
 
 - This will be replaced with a table of contents
