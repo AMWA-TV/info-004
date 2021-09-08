@@ -5,9 +5,9 @@
 
 {:toc}
 
-There are many DNS server options, but for the purposes of this guide we will use BIND on Linux, a very popular open source solution.
+There are many Domain Name Service (DNS) server options, but for the purposes of this guide we will use BIND on Linux, a very popular open source solution.
 
-What services does the NMOS RDS need to serve? From the [AMWA NMOS IS-04 specification](https://specs.amwa.tv/is-04/releases/v1.3.1/docs/3.0._Discovery.html), the following services should be configured:
+What services does the Networked Media Open Specifications (NMOS) Registration and Discovery Service (RDS) server need to provide? From the [AMWA NMOS IS-04 specification](https://specs.amwa.tv/is-04/releases/v1.3.1/docs/3.0._Discovery.html), the following services should be configured:
 
 - `_nmos-register._tcp`: A logical host which advertises a Registration API.
 - `_nmos-query._tcp`: A logical host which advertises a Query API.
@@ -60,7 +60,7 @@ zone "gplab.com" {
 
 ### Configuring the Zone file
 
-You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration information above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to first create the directory `/etc/bind/zones/`.
+You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to create this zone file.  But first create the directory `/etc/bind/zones/`.
 
 ```
 gp@gplab.com:~ # cd /etc/bind
@@ -68,7 +68,7 @@ gp@gplab.com:~ # mkdir zones
 gp@gplab.com:~ # cd zones
 ```
 
-Use any text editor to create the file `db.gplab.com` in the `zones` directory based upon the directions below.
+Next, use any text editor to create the file `db.gplab.com` in the `/etc/bind/zones` directory based upon the directions below.
 
 ### Configuring the hosts / TXT / SRV file
 
@@ -91,7 +91,7 @@ Then we define our DNS server for this zone. End-points should be configured wit
         IN      NS      dns.gplab.com.
 ```
 
-We add the following PTR records to indicate the server supports Service Discovery.  Clients looking for DNS-SD support will query the server for these specific records.  (`b` is for `browse`.  `lb` is for `legacy browse`.)
+We add the following PTR records to indicate the server supports Service Discovery.  Clients looking for DNS-SD support will query the server for these specific records (`b` is for `browse`,  `lb` is for `legacy browse`.)
 
 ```
 ; These lines indicate to clients that this server supports DNS Service Discovery
@@ -99,7 +99,7 @@ b._dns-sd._udp	IN	PTR	@
 lb._dns-sd._udp	IN	PTR	@
 ```
 
-Next we define the NMOS register services provided by this server:
+Next we define the NMOS services provided by this server:
 
 ```
 ; These lines indicate to clients which NMOS service types this server advertises:
@@ -107,14 +107,14 @@ _services._dns-sd._udp	PTR	_nmos-register._tcp
 _services._dns-sd._udp	PTR	_nmos-query._tcp
 ```
 
-There should be one `PTR` record for each instance of the service you wish to advertise. Here we have one Registration API and one Query API:
+There should be one `PTR` record for each instance of the service you wish to advertise. Here we have one service available through the Registration API and one service available through the Query API:
 
 ```
 _nmos-register._tcp	PTR	reg-api-1._nmos-register._tcp
 _nmos-query._tcp	PTR	qry-api-1._nmos-query._tcp
 ```
 
-Now we add a record that indicates specifically where to find the register and query APIs.  In this case, it is `rds1.gplab.com`.
+Now we add SRV records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.gplab.com`.
 
 ```
 ; NMOS RDS services
@@ -122,7 +122,7 @@ reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80 
 qry-api-1._nmos-query._tcp.gplab.com.        3600    IN SRV  10      10      80      rds1.gplab.com.
 ```
 
-We add a TXT record which provides information relevant to the IS-04 specification
+We add TXT records which provide information relevant to the IS-04 specification
 
 ```
 ; Additional metadata relevant to the IS-04 specification.
@@ -130,14 +130,14 @@ reg-api-1._nmos-register._tcp.gplab.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_
 qry-api-1._nmos-query._tcp.gplab.com.           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
-We add a records which associates the NMOS register and NMOS query with the RDS.
+We add records which associate the NMOS register and NMOS query with the RDS.
 ```
 ; RDS
 _nmos-register._tcp.gplab.com.     3600    IN SRV  10      20      80      rds1.gplab.com.
 _nmos-query._tcp.gplab.com.        3600    IN SRV  10      20      80      rds1.gplab.com.
 ```
 
-In all cases above the `SRV` records are identifying a port number of `80`. This would suit default HTTP access, with `443` needed for HTTPS - but again, this would be a question for the RDS vendor.
+In both cases above the `SRV` records tell clients to access the server using port `80`. This would suit default HTTP access, but if HTTPS is used, this would need to be changed to `443`.
 
 Lastly we provide the IP addresses for the hosts in the system. This file can of course be expanded to contain names for all the hosts, end-points, and switches in the system, making debugging simpler.
 
@@ -152,7 +152,7 @@ rds1.gplab.com.            IN      A       192.168.0.50
 
 ### Starting the service
 
-Once the files are in place, the service can be started and made permanent (will run after a reload of the server):
+Once the files are in place, the service can be started and made permanent (will run after a reload/reboot of the server):
 
 CentOS 7
 ```
