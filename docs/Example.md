@@ -120,24 +120,24 @@ _nmos-query._tcp	PTR	qry-api-1._nmos-query._tcp
 Now we add SRV records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.gplab.com`.
 
 ```
-; NMOS RDS services
-reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80      rds1.gplab.com.
-qry-api-1._nmos-query._tcp.gplab.com.        3600    IN SRV  10      10      80      rds1.gplab.com.
+; NMOS RDS services                          TTL     Class  SRV  Priority  Weight  Port  Target
+reg-api-1._nmos-register._tcp.gplab.com.     3600    IN     SRV  10        10      80    rds1.gplab.com.
+qry-api-1._nmos-query._tcp.gplab.com.        3600    IN     SRV  10        10      80    rds1.gplab.com.
 ```
 
 We add TXT records which provide information relevant to the IS-04 specification
 
 ```
-; Additional metadata relevant to the IS-04 specification.
+; Additional metadata relevant to the IS-04 specification. See IS-04 specification section "Discovery: Registered Operation"
 reg-api-1._nmos-register._tcp.gplab.com.	TXT	"api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 qry-api-1._nmos-query._tcp.gplab.com.           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
 We add records which associate the NMOS register and NMOS query with the RDS.
 ```
-; RDS
-_nmos-register._tcp.gplab.com.     3600    IN SRV  10      20      80      rds1.gplab.com.
-_nmos-query._tcp.gplab.com.        3600    IN SRV  10      20      80      rds1.gplab.com.
+; RDS                              TTL     Class  SRV  Priority  Weight  Port  Target
+_nmos-register._tcp.gplab.com.     3600    IN     SRV  10        20      80    rds1.gplab.com.
+_nmos-query._tcp.gplab.com.        3600    IN     SRV  10        20      80    rds1.gplab.com.
 ```
 
 In both cases above the `SRV` records tell clients to access the server using port `80`. This would suit default HTTP access, but if HTTPS is used, this would need to be changed to `443`.
@@ -146,9 +146,9 @@ Lastly we provide the IP addresses for the hosts in the system. This file can of
 
 
 ```
-; Nameserver records
-dns1.gplab.com.            IN      A       192.168.0.18
-rds1.gplab.com.            IN      A       192.168.0.50
+; Nameserver records       Class  Type  Target
+dns1.gplab.com.            IN     A    192.168.0.18
+rds1.gplab.com.            IN     A    192.168.0.50
 ```
 
 
