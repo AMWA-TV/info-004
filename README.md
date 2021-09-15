@@ -9,10 +9,11 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 ### What does it do?
 
--  DNS Service Discovery (DNS-SD) provides a simple and flexible method to discover NMOS Registration and Discovery Server (RDS) Services.
+- Provides a practical "how-to" example of how to set up a DNS-SD server for NMOS use.
 
 ### Why does it matter?
 
+- DNS Service Discovery (DNS-SD) provides a simple and flexible method to discover NMOS Registration and Discovery Server (RDS) Services.
 - The NMOS RDS provides information about NMOS nodes, devices, and APIs. There must be a common way to locate the RDS in order for an NMOS component to register itself for discovery by other NMOS components. 
 
 ### How does it work?
