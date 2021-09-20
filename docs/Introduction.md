@@ -1,4 +1,8 @@
-# NMOS Implementation Guide for DNS-SD: Introduction
+# AMWA INFO-004 NMOS Implementation Guide for DNS-SD: Introduction
+{:.no_toc}
+
+- This will be replaced with a table of contents
+{:toc}
 
 ![Arista Logo](images/arista-logo.png)
 
@@ -6,7 +10,7 @@
 
 This Implementation Guide provides help for installing, setting up and testing DNS-SD services for an NMOS deployment.  
 
-This page gives an introduction, and discusses possible architectures. We also provide a [practical example](Example.md) for setting up a BIND9 server and reference for other DNS servers.
+This page gives an introduction, and discusses possible architectures. We also provide a [practical example HOWTO](Example%20HOWTO.md) for setting up a BIND9 server and reference for other DNS servers.
 
 >The Guide is a living document and suggestions, corrections or other input is welcome at all times.
 >
@@ -56,11 +60,6 @@ In order to be usable in a production ST 2110 environment, the DNS system must h
 DNS resilience is clearly vital in this environment. There are a number of methods that can be used to achieve resiliency.
 
 1. Main and backup DNS servers. Hosts are provided with both DNS server addresses. This is simple, but requires end-points to have both IP addresses, and to be able to cut over, when the main server is not reachable. Depending on end-point implementation, there may be a delay between the time a DNS becomes unreachable, and a host cutting over.
-
- > Is this statement true?  I guess the only delay is in the client timeout.  So perhaps yes, but is that what you are referring to? - BG
- >
- > Have adjusted the previous paragraph, hope this is clearer - GP
-
 2. Multiple DNS servers run with a shared virtual address. This has the advantage of being very simple for the end-point - only a single IP address needs to be provisioned. The availability of this mode of operation is subject to it being supported by the DNS server.
 3. Multiple DNS servers can be implemented, running behind a load balancer. The load balancer presents only a single IP address to the end-points.
 
@@ -82,13 +81,10 @@ The choice of one method over the other will be driven by a number of factors:
 ## One DNS Server per Media Network
 
 This design seeks to avoid the need for any connectivity and routing between the Red / Blue media networks, and the OOB (out-of-band network). This is achieved by providing either a DNS instance per network, or by using “ZoneScopes” to provide DNS services per interface.
-It can support end-points with Media network or OOB connectivity.
 
-> Don’t you mean it can support end-points that only have media network connectivity? - BG
->
-> Hope the above adjustment is clearer? - GP
+This design can support end-points with Media network or OOB connectivity.
 
-It provides direct access to the DNS servers from the Red, Blue and OOB networks, and the RDS servers likewise live directly attached to all networks.
+This design provides direct access to the DNS servers from the Red, Blue and OOB networks, and the RDS servers likewise live directly attached to all networks.
 
 Three independent DNS configs are needed, Red, Blue and OOB. Each pair of DNS servers can work in Primary/Secondary mode if resilience is needed. The Master / Slave configuration ensures that they are running consistent setups.
 
@@ -99,31 +95,12 @@ While this design provides inherent separation between Red / Blue and OOB, it ma
 - If Red, Blue and OOB access is needed, then the separate DNS instances will be needed, or more complex “ZoneScopes” will be required to ensure that the right responces are provided to the multiple network interfaces.
 - If DNS is operational on OOB and Red / Blue networks, end-points will need to capable of processing the multiple DNS responses, to determine which responses represent reachable RDS servers.
 
-![DNS in Media Networks](images/dns-in-media-networks.png)
-
-> Modify drawing to change Master and Slave to Primary and Secondary.
->
-> Top right ‘Blue DNS Master’ box line to OBB Network is not vertical.
->
-> Another point – I do not understand why the DNS servers are shown to be crossing in the diagram.  Isn’t it as simple as having Primary and Secondary DNS servers for Red and the same thing for Blue?  If so, then I would think you could show, left to right at the top of the drawing, Red DNS Primary, Red DNS Secondary, both connected to the Red Media Network, and then Blue DNS Primary, Blue DNS Secondary, both connected to the Blue Media Network.  Eliminates crossing lines and the implication of complexity in the drawing, which is not actually there in the build. - BG
->
-> All sound very sensible - GP
+![DNS in Media Networks](images/dns-in-media-networks.drawio.png)
 
 End-points can have up to two DNS server addresses configured per media network depending on the levels of resilience required (e.g. Red network):
 
-- DNS Red (P)
-- DNS Red (S)
-
-The DNS servers would serve up the appropriate RDS addresses, depending on the interface on which the request came. For resilience, the DNS servers would serve two addresses, allowing access to either of the RDS servers. (eg. Red network)
-
-> Perhaps consolidate these two sentences into one?  Info seems redundant. - BG
-
-- DNS Red/Red
-  > Is this correct?  Should this be DNS Blue/Red? - BG
-- DNS Red/Blue
-  > I find the above a little confusing.  Is the point of this that the DNS server on the Blue network serves out the RDS address for Blue and also the RDS address for Red?  And that the DNS server on Red serves out the RDS address for both Red and Blue?  If so, perhaps some explanatory text would help – BG
- >
- > Agree this is confusing, think it was covered before, this can go. - GP
+- DNS Red (Primary)
+- DNS Red (Secondary)
 
 The cost of the Red / Blue / OOB isolation is duplication of services, and complexity in end-point capability and configuration. 2x DNS servers would be provisioned for maximum resilience, and multiple NIC’s are needed on each DNS server, to connect to the three available networks. RDS servers need to support multiple interfaces, to allow facing towards both Red and Blue, and RDS servers need to be able to operate as active-active.
 
@@ -131,11 +108,7 @@ The cost of the Red / Blue / OOB isolation is duplication of services, and compl
 
 This is a much simpler architecture conceptually, but requires that the OOB network is reachable from the end-points - this may be less appealing to some customers who want to see “harder” separation between the media networks, and between media networks and OOB network.
 
-![DNS in OOB Network](images/dns-in-oob-network.png)
-
-> DNS (P), DNS (S).  Also, isn’t it RDS R for Red? - BG
->
-> Good spot, should be DNS(P) DNS(S). In this case, it RDS Main RDS Secondary - GP
+![DNS in OOB Network](images/dns-in-oob-network.drawio.png)
 
 Access to the DNS and RDS servers is through the common OOB network. This provides reachability for these services from both Red and Blue networks, and natively for end-points that only support OOB DNS/RDS access. As a result, the duplication of DNS servers needed in the previous design has disappeared. This also means that only one DNS config is needed, and that end-points only need to know the same two DNS addresses - irrespective of which network they are implementing the DNS lookup on - Red, Blue, or OOB.
 
