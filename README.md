@@ -9,20 +9,21 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 ### What does it do?
 
-- Provides a practical "how-to" example of how to set up a DNS-SD server for NMOS use.
+- Explains the use of DNS-SD in NMOS environments.
+- Provides a practical "how-to" example of how to set up a BIND9 DNS server for NMOS use.
+- Gives example configurations for other DNS server.
 
 ### Why does it matter?
 
 - DNS Service Discovery (DNS-SD) provides a simple and flexible method to discover NMOS Registration and Discovery Server (RDS) Services.
-- The NMOS RDS provides information about NMOS nodes, devices, and APIs. There must be a common way to locate the RDS in order for an NMOS component to register itself for discovery by other NMOS components. 
+- The NMOS RDS provides information about NMOS nodes, devices, and APIs. There must be a common way to locate the RDS in order for an NMOS component to register itself for discovery by other NMOS components.
 
 ### How does it work?
 
-The examples in this Implementation Guide add records to a BIND9 DNS server such that the server responds to standardized queries with information that indicates:
+The example add records to a BIND9 DNS server such that the server responds to standardized queries with information that indicates:
 
 - The fact that the DNS server provides Service Discovery
 - Where the NMOS RDS may be found on the network
-
 
 <!-- INTRO-END -->
 

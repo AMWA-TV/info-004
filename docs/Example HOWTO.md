@@ -1,4 +1,4 @@
-# Practical Implementation Example
+# Example HOWTO
 {:.no_toc}
 
 - This will be replaced with a table of contents
