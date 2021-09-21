@@ -146,9 +146,9 @@ Lastly we provide the IP addresses for the hosts in the system. This file can of
 
 
 ```
-; Nameserver records       Class  Type  Target
-dns1.gplab.com.    IN     A    192.168.0.18
-rds1.gplab.com.    IN     A    192.168.0.50
+; Nameserver records    Class  Type     Target
+dns1.gplab.com.         IN     A        192.168.0.18
+rds1.gplab.com.         IN     A        192.168.0.50
 ```
 
 
@@ -289,30 +289,25 @@ If more than one RDS server can be used, then two records can be provided, with 
 
 ```
 ; NMOS RDS services
-; Expected RDS
+; Primary RDS
 reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80      rds1.gplab.com.
 
-; Backup RDS
-reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  20      10      80      rds2.gplab.com.
+; Secondary RDS
+reg-api-2._nmos-register._tcp.gplab.com.     3600    IN SRV  20      10      80      rds2.gplab.com.
 ```
 
-A TXT record providing information relevant to the IS-04 specification
+TXT records providing information relevant to the IS-04 specification. A We also include priority information here as many DNS-SD clients ignore the priority and weight information in SRV records.
 
 ```
 ; Additional metadata relevant to the IS-04 specification.
-reg-api-1._nmos-register._tcp.gplab.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
+; Primary RDS
+reg-api-1._nmos-register._tcp.gplab.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=10" "api_auth=false"
+
+; Secondary RDS
+reg-api-2._nmos-register._tcp.gplab.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=20" "api_auth=false"
 ```
 
-
-Take advice from the RDS vendor about how to set the Priority (`10`) and Weight (`20`) for these `SRV` records. If active-active is available in the RDS servers, then these records can be used to provide load-balancing. In the case below, both records would be served with equal weight.
-
-```
-; RDS A
-_nmos-register._tcp.gplab.com.     3600    IN SRV  10      20      80      rds1.gplab.com.
-
-; RDS B
-_nmos-register._tcp.gplab.com.     3600    IN SRV  10      20      80      rds2.gplab.com.
-```
+Take advice from the RDS vendor about how to set the priority and weight. If active-active is available in the RDS servers, then these records can be used to provide load-balancing.
 
 In all cases above the `SRV` records are identifying a port number of `80`. This would suit default HTTP access, with `443` needed for HTTPS - but again, this would be a question for the RDS vendor.
 
