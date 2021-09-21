@@ -117,7 +117,7 @@ _nmos-register._tcp     PTR     reg-api-1._nmos-register._tcp
 _nmos-query._tcp        PTR     qry-api-1._nmos-query._tcp
 ```
 
-Now we add SRV records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.gplab.com`.
+Now we add `SRV` records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.gplab.com`.
 
 ```
 ; NMOS RDS services                          TTL     Class  SRV  Priority  Weight  Port  Target
@@ -125,7 +125,7 @@ reg-api-1._nmos-register._tcp.gplab.com.     3600    IN     SRV  10        10   
 qry-api-1._nmos-query._tcp.gplab.com.        3600    IN     SRV  10        10      80    rds1.gplab.com.
 ```
 
-We add TXT records which provide information relevant to the IS-04 specification
+We add `TXT` records which provide information relevant to the IS-04 specification
 
 ```
 ; Additional metadata relevant to the IS-04 specification. See IS-04 specification section "Discovery: Registered Operation"
@@ -233,7 +233,7 @@ dns2.gplab.com. 3600    IN      A       192.168.0.20
 ;; MSG SIZE  rcvd: 134
 ```
 
-### Checking the SRV records
+### Checking the `SRV` records
 
 We can also use `dig` to check the presence of the `_nmos._register_.tcp` record:
 
@@ -296,7 +296,7 @@ reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80 
 reg-api-2._nmos-register._tcp.gplab.com.     3600    IN SRV  20      10      80      rds2.gplab.com.
 ```
 
-TXT records providing information relevant to the IS-04 specification. A We also include priority information here as many DNS-SD clients ignore the priority and weight information in SRV records.
+We also provide `TXT` record for the both the primary and secondary RDS servers, with information relevant to the IS-04 specification. We also include priority information here as many DNS-SD clients ignore the priority and weight information in `SRV` records.
 
 ```
 ; Additional metadata relevant to the IS-04 specification.
@@ -309,9 +309,9 @@ reg-api-2._nmos-register._tcp.gplab.com.        TXT     "api_ver=v1.0,v1.1,v1.2,
 
 Take advice from the RDS vendor about how to set the priority and weight. If active-active is available in the RDS servers, then these records can be used to provide load-balancing.
 
-In all cases above the `SRV` records are identifying a port number of `80`. This would suit default HTTP access, with `443` needed for HTTPS - but again, this would be a question for the RDS vendor.
+In all cases above the `SRV` records are identifying a port number of `80`. This would suit default HTTP access. For HTTPS access (see [BCP-003-01](https://specs.amwa.tv/bcp-003-01)) this would be set to `443`, and the `TXT` records would include `api_proto=https`. Again, this would be a question for the RDS vendor.
 
-Lastly we provide the IP addresses for the hosts in the system. This file can of course be expanded to contain names for all the hosts, end-points, and switches in the system, making debugging simpler 
+Lastly we provide the IP addresses for the hosts in the system. This file can of course be expanded to contain names for all the hosts, end-points, and switches in the system, making debugging simpler:
 
 ```
 ; Nameserver records
