@@ -11,7 +11,7 @@ This repository holds the source for this Implementation Guide, part of the fami
 
 - Explains the use of DNS-SD in NMOS environments.
 - Provides a practical "how-to" example of how to set up a BIND9 DNS server for NMOS use.
-- Gives example configurations for other DNS server.
+- Gives example configurations for other DNS servers.
 
 ### Why does it matter?
 
