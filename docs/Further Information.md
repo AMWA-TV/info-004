@@ -1,5 +1,4 @@
-
-# References
+# Further Information
 
 <https://specs.amwa.tv/is-04/>
 
