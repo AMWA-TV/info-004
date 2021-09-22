@@ -272,9 +272,9 @@ dns2.gplab.com. 3600    IN      A       192.168.0.20
 ;; MSG SIZE  rcvd: 243
 ```
 
-## Backing Up DNS (BIND) Servers
+## Providing Back-up DNS (BIND) Servers
 
-To provide resilience, a secondary DNS server and a secondary RDS server should be provisioned. end-points should have both DNS IP addresses configured, allowing them to use the backup DNS server, if the primary is no longer available.
+To provide resilience, a secondary DNS server and a secondary RDS server should be provisioned. end-points should have both DNS IP addresses configured, allowing them to use the secondary DNS server, if the primary is no longer available.
 
 BIND allows primary / secondary pairing, so that the zones and hosts configuration can be automatically updated on the secondary device, reducing the amount of duplication.
 
