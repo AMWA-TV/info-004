@@ -86,7 +86,7 @@ This design can support end-points with Media network or OOB connectivity.
 
 This design provides direct access to the DNS servers from the Red, Blue and OOB networks, and the RDS servers likewise live directly attached to all networks.
 
-Three independent DNS configs are needed, Red, Blue and OOB. Each pair of DNS servers can work in Primary/Secondary mode if resilience is needed. The Master / Slave configuration ensures that they are running consistent setups.
+Three independent DNS configs are needed, Red, Blue and OOB. Each pair of DNS servers can work in Primary/Secondary mode if resilience is needed. The Primary / Secondary configuration ensures that they are running consistent setups.
 
 If no end-points need OOB access to the DNS servers, then there is no need (except for access) to consider that network in this design.
 
