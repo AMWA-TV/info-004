@@ -4,10 +4,6 @@
 - This will be replaced with a table of contents
 {:toc}
 
-![Arista Logo](images/arista-logo.png)
-
-**By Gerard Philips, Systems Engineer, Arista Networks**
-
 This Implementation Guide provides help for installing, setting up and testing DNS-SD services for an NMOS deployment.  
 
 This page gives an introduction, and discusses possible architectures. We also provide a [practical example HOWTO](Example%20HOWTO.md) for setting up a BIND9 server and reference for other DNS servers.
