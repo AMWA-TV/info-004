@@ -36,7 +36,7 @@ The following items highlight key aspects of use of DNS-SD in conjunction with D
 
 This document will focus on the “media DNS”. The media DNS is responsible only for DNS on the media sub-system. If necessary, the media DNS can be configured to forward non-local DNS requests to a corporate DNS server further up the line to resolve items not local to the media network.
 
-This document will describe how to architect and setup a DNS environment to provide a robust, highly available DNS-SD service within an ST 2110 environment, with the objective of enabling the ANWA NMOS IS-0X suite. In addition, a link to more detailed technical information is provided in the form of an AMWA Technical Documentation Guide. This guide gives specific information needed to setup particular infrastructure such as config files for particular DNS-SD supporting software.
+This document will describe how to architect and setup a DNS environment to provide a robust, highly available DNS-SD service within an ST 2110 environment, with the objective of enabling the ANWA NMOS IS-0X suite. Additional details for setting up specific DNS-SD servers with practical hints can be found as part of the Example HOWTO in the next section. This guide gives specific information needed to setup particular infrastructure such as config files for particular DNS-SD supporting software.
 
 ## Infrastructure Requirements
 
