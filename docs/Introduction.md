@@ -120,7 +120,7 @@ If OOB to media network security needs are high, then a firewall could be placed
 
 ## Conclusions
 
-This document has provided an overview of the need for DNS-SD for NMOS RDS discovery and provided details of an overall approach to use and configuration of DNS-SD in an NMOS deployment.  Additional details for setting up specific DNS-SD servers with practical hints can be found as part of an AMWA NMOS DNS-SD Implementation Guide .
+This document has provided an overview of the need for DNS-SD for NMOS RDS discovery and provided details of an overall approach to use and configuration of DNS-SD in an NMOS deployment.  Additional details for setting up specific DNS-SD servers with practical hints can be found as part of the Example HOWTO in the next section.
 
 ## Abbreviations
 
