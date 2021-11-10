@@ -1,4 +1,4 @@
-# AMWA INFO-004: NMOS Implementation Guide for DNS-SD \[Work In Progress\]
+# AMWA INFO-004: NMOS Implementation Guide for DNS-SD
 
 [![Lint Status](https://github.com/AMWA-TV/nmos-dns-sd-implementation-guide/workflows/Lint/badge.svg)](https://github.com/AMWA-TV/nmos-template/actions?query=workflow%3ALint)
 [![Render Status](https://github.com/AMWA-TV//workflows/Render/badge.svg)](https://github.com/AMWA-TV/nmos-template/actions?query=workflow%3ARender)
