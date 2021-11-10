@@ -47,7 +47,7 @@ apt update && apt install bind9
 
 ### Adding the example zone to the DNS server
 
-In this example, we will be working with the domain `gplab.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this domain (referred to as a 'zone' in BIND).  Zone information is kept in the following directories, depending upon your Linux version:
+In this example, we will be working with the domain `example.com`.  We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this domain (referred to as a 'zone' in BIND).  Zone information is kept in the following directories, depending upon your Linux version:
 
 CentOS 7 `/etc/bind/named.conf`
 Ubuntu/Raspbian `/etc/bind/named.conf.local`
@@ -55,23 +55,23 @@ Ubuntu/Raspbian `/etc/bind/named.conf.local`
 To add the zone, enter the information below in the appropriate configuration file for your distribution.
 
 ```
-zone "gplab.com" {
+zone "example.com" {
         type master;
-        file "/etc/bind/zones/db.gplab.com";
+        file "/etc/bind/zones/db.example.com";
 };
 ```
 
 ### Configuring the Zone file
 
-You will notice the line `file "/etc/bind/zones/db.gplab.com";` in the configuration above.  This is a pointer to the zone file for the domain `gplab.com`.  In order for the DNS server to work properly, you will need to create this zone file.  But first create the directory `/etc/bind/zones/`.
+You will notice the line `file "/etc/bind/zones/db.example.com";` in the configuration above.  This is a pointer to the zone file for the domain `example.com`.  In order for the DNS server to work properly, you will need to create this zone file.  But first create the directory `/etc/bind/zones/`.
 
 ```
-gp@gplab.com:~ # cd /etc/bind
-gp@gplab.com:~ # mkdir zones
-gp@gplab.com:~ # cd zones
+gp@example.com:~ # cd /etc/bind
+gp@example.com:~ # mkdir zones
+gp@example.com:~ # cd zones
 ```
 
-Next, use any text editor to create the file `db.gplab.com` in the `/etc/bind/zones` directory based upon the directions below.
+Next, use any text editor to create the file `db.example.com` in the `/etc/bind/zones` directory based upon the directions below.
 
 ### Configuring the hosts / TXT / SRV file
 
@@ -79,7 +79,7 @@ We begin by defining several required DNS parameters.
 
 ```
 $TTL 3600
-@       IN      SOA     dns1.gplab.com. admin.gplab.com. (
+@       IN      SOA     dns1.example.com. admin.example.com. (
            20210713     ; Serial
                3600     ; Refresh
                 600     ; Retry
@@ -91,7 +91,7 @@ Then we define our DNS server for this zone. End-points should be configured wit
 
 ```
 ; DNS server
-        IN      NS      dns.gplab.com.
+        IN      NS      dns.example.com.
 ```
 
 We add the following PTR records to indicate the server supports Service Discovery.  Clients looking for DNS-SD support will query the server for these specific records (`b` is for `browse`,  `lb` is for `legacy browse`.)
@@ -117,27 +117,27 @@ _nmos-register._tcp     PTR     reg-api-1._nmos-register._tcp
 _nmos-query._tcp        PTR     qry-api-1._nmos-query._tcp
 ```
 
-Now we add `SRV` records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.gplab.com`.
+Now we add `SRV` records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.example.com`.
 
 ```
 ; NMOS RDS services                          TTL     Class  SRV  Priority  Weight  Port  Target
-reg-api-1._nmos-register._tcp.gplab.com.     3600    IN     SRV  10        10      80    rds1.gplab.com.
-qry-api-1._nmos-query._tcp.gplab.com.        3600    IN     SRV  10        10      80    rds1.gplab.com.
+reg-api-1._nmos-register._tcp.example.com.     3600    IN     SRV  10        10      80    rds1.example.com.
+qry-api-1._nmos-query._tcp.example.com.        3600    IN     SRV  10        10      80    rds1.example.com.
 ```
 
 We add `TXT` records which provide information relevant to the IS-04 specification
 
 ```
 ; Additional metadata relevant to the IS-04 specification. See IS-04 specification section "Discovery: Registered Operation"
-reg-api-1._nmos-register._tcp.gplab.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
-qry-api-1._nmos-query._tcp.gplab.com.           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
+reg-api-1._nmos-register._tcp.example.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
+qry-api-1._nmos-query._tcp.example.com.           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
 We add records which associate the NMOS register and NMOS query with the RDS.
 ```
 ; RDS                              TTL     Class  SRV  Priority  Weight  Port  Target
-_nmos-register._tcp.gplab.com.     3600    IN     SRV  10        20      80    rds1.gplab.com.
-_nmos-query._tcp.gplab.com.        3600    IN     SRV  10        20      80    rds1.gplab.com.
+_nmos-register._tcp.example.com.     3600    IN     SRV  10        20      80    rds1.example.com.
+_nmos-query._tcp.example.com.        3600    IN     SRV  10        20      80    rds1.example.com.
 ```
 
 In both cases above the `SRV` records tell clients to access the server using port `80`. This would suit default HTTP access, but if HTTPS is used, this would need to be changed to `443`.
@@ -147,8 +147,8 @@ Lastly we provide the IP addresses for the hosts in the system. This file can of
 
 ```
 ; Nameserver records    Class  Type     Target
-dns1.gplab.com.         IN     A        192.168.0.18
-rds1.gplab.com.         IN     A        192.168.0.50
+dns1.example.com.         IN     A        192.168.0.18
+rds1.example.com.         IN     A        192.168.0.50
 ```
 
 
@@ -181,7 +181,7 @@ firewall-cmd --reload
 
 ## Testing
 
-You can test the functionality of the new DNS server right from the server itself.  You can also run these tests from a Linux box or Mac by setting the `nameserver` portion of the Linux or Mac box network configuration to point to your new DNS server.  If you run the tests below from a separate computer, omit `localhost` or `@locahost` from the commands below.
+You can test the functionality of the new DNS server right from the server itself.  You can also run these tests from a Linux box or Mac by setting the `nameserver` portion of the Linux or Mac box network configuration to point to your new DNS server.  If you run the tests below from a separate computer, omit `localhost` or `@localhost` from the commands below.
 
 There are a couple of tools that allow the DNS operation to be tested.
 
@@ -189,11 +189,11 @@ We can verify that the host names of the RDS servers are configured:
 
 
 ```
-gp@gplab.com:~ # nslookup rds1.gplab.com locahost
+gp@example.com:~ # nslookup rds1.example.com localhost
 Server:         192.168.0.18
 Address:        192.168.0.18#53
 
-Name:           rds1.gplab.com
+Name:           rds1.example.com
 Address:        192.168.0.50
 ```
 
@@ -203,9 +203,9 @@ We can see that the lookup was resolved by `192.168.0.18`, and resulted in the a
 The `dig` tool provides a little more info:
 
 ```
-gp@gplab.com:~ # dig @localhost rds1.gplab.com
+gp@example.com:~ # dig @localhost rds1.example.com
 
-; <<>> DiG 9.10.6 <<>> rds1.gplab.com
+; <<>> DiG 9.10.6 <<>> rds1.example.com
 ;; global options: +cmd
 ;; Got answer:
 ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12178
@@ -214,18 +214,18 @@ gp@gplab.com:~ # dig @localhost rds1.gplab.com
 ;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096
 ;; QUESTION SECTION:
-;rds1.gplab.com.                IN      A
+;rds1.example.com.                IN      A
 
 ;; ANSWER SECTION:
-rds1.gplab.com. 3600    IN      A       192.168.0.50
+rds1.example.com. 3600    IN      A       192.168.0.50
 
 ;; AUTHORITY SECTION:
-gplab.com.      3600    IN      NS      dns2.gplab.com.
-gplab.com.      3600    IN      NS      dns1.gplab.com.
+example.com.      3600    IN      NS      dns2.example.com.
+example.com.      3600    IN      NS      dns1.example.com.
 
 ;; ADDITIONAL SECTION:
-dns1.gplab.com. 3600    IN      A       192.168.0.18
-dns2.gplab.com. 3600    IN      A       192.168.0.20
+dns1.example.com. 3600    IN      A       192.168.0.18
+dns2.example.com. 3600    IN      A       192.168.0.20
 
 ;; Query time: 43 msec
 ;; SERVER: 192.168.0.18#53(192.168.0.18)
@@ -239,9 +239,9 @@ We can also use `dig` to check the presence of the `_nmos._register_.tcp` record
 
 
 ```
-gp@gplab.com:~ # dig @localhost _nmos-register._tcp.gplab.com SRV
+gp@example.com:~ # dig @localhost _nmos-register._tcp.example.com SRV
 
-; <<>> DiG 9.10.6 <<>> _nmos-register._tcp.gplab.com SRV
+; <<>> DiG 9.10.6 <<>> _nmos-register._tcp.example.com SRV
 ;; global options: +cmd
 ;; Got answer:
 ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 44496
@@ -250,21 +250,21 @@ gp@gplab.com:~ # dig @localhost _nmos-register._tcp.gplab.com SRV
 ;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096
 ;; QUESTION SECTION:
-;_nmos-register._tcp.gplab.com. IN      SRV
+;_nmos-register._tcp.example.com. IN      SRV
 
 ;; ANSWER SECTION:
-_nmos-register._tcp.gplab.com. 3600 IN SRV      10 10 80 rds1.gplab.com.
-_nmos-register._tcp.gplab.com. 3600 IN SRV      20 10 80 rds2.gplab.com.
+_nmos-register._tcp.example.com. 3600 IN SRV      10 10 80 rds1.example.com.
+_nmos-register._tcp.example.com. 3600 IN SRV      20 10 80 rds2.example.com.
 
 ;; AUTHORITY SECTION:
-gplab.com.      3600    IN      NS      dns2.gplab.com.
-gplab.com.      3600    IN      NS      dns1.gplab.com.
+example.com.      3600    IN      NS      dns2.example.com.
+example.com.      3600    IN      NS      dns1.example.com.
 
 ;; ADDITIONAL SECTION:
-rds1.gplab.com. 3600    IN      A       192.168.0.50
-rds2.gplab.com. 3600    IN      A       192.168.0.51
-dns1.gplab.com. 3600    IN      A       192.168.0.18
-dns2.gplab.com. 3600    IN      A       192.168.0.20
+rds1.example.com. 3600    IN      A       192.168.0.50
+rds2.example.com. 3600    IN      A       192.168.0.51
+dns1.example.com. 3600    IN      A       192.168.0.18
+dns2.example.com. 3600    IN      A       192.168.0.20
 
 ;; Query time: 41 msec
 ;; SERVER: 192.168.0.18#53(192.168.0.18)
@@ -290,10 +290,10 @@ If more than one RDS server can be used, then two records can be provided, with 
 ```
 ; NMOS RDS services
 ; Primary RDS
-reg-api-1._nmos-register._tcp.gplab.com.     3600    IN SRV  10      10      80      rds1.gplab.com.
+reg-api-1._nmos-register._tcp.example.com.     3600    IN SRV  10      10      80      rds1.example.com.
 
 ; Secondary RDS
-reg-api-2._nmos-register._tcp.gplab.com.     3600    IN SRV  20      10      80      rds2.gplab.com.
+reg-api-2._nmos-register._tcp.example.com.     3600    IN SRV  20      10      80      rds2.example.com.
 ```
 
 We also provide `TXT` record for the both the primary and secondary RDS servers, with information relevant to the IS-04 specification. We also include priority information here as many DNS-SD clients ignore the priority and weight information in `SRV` records.
@@ -301,10 +301,10 @@ We also provide `TXT` record for the both the primary and secondary RDS servers,
 ```
 ; Additional metadata relevant to the IS-04 specification.
 ; Primary RDS
-reg-api-1._nmos-register._tcp.gplab.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=10" "api_auth=false"
+reg-api-1._nmos-register._tcp.example.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=10" "api_auth=false"
 
 ; Secondary RDS
-reg-api-2._nmos-register._tcp.gplab.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=20" "api_auth=false"
+reg-api-2._nmos-register._tcp.example.com.        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=20" "api_auth=false"
 ```
 
 Take advice from the RDS vendor about how to set the priority and weight. If active-active is available in the RDS servers, then these records can be used to provide load-balancing.
@@ -315,8 +315,8 @@ Lastly we provide the IP addresses for the hosts in the system. This file can of
 
 ```
 ; Nameserver records
-dns1.gplab.com.    IN      A       192.168.0.18
-dns2.gplab.com.    IN      A       192.168.0.20
-rds1.gplab.com.    IN      A       192.168.0.50
-rds2.gplab.com.    IN      A       192.168.0.51
+dns1.example.com.    IN      A       192.168.0.18
+dns2.example.com.    IN      A       192.168.0.20
+rds1.example.com.    IN      A       192.168.0.50
+rds2.example.com.    IN      A       192.168.0.51
 ```
