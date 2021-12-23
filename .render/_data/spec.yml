@@ -1,0 +1,10 @@
+amwa_id: INFO-004
+url: https://specs.amwa.tv/info-004
+name: Implementation Guide for DNS-SD
+status: AMWA Specification
+repo_name: info-004
+alt_repo_name: nmos-dns-sd-implementation-guide
+repo_url: https://github.com/AMWA-TV/info-004
+releases:
+default_branch: main
+show_in_index: true
