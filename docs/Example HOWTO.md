@@ -91,7 +91,7 @@ Then we define our DNS server for this zone. End-points should be configured wit
 
 ```
 ; DNS server
-        IN      NS      dns.example.com.
+        IN      NS      dns1.example.com.
 ```
 
 We add the following PTR records to indicate the server supports Service Discovery.  Clients looking for DNS-SD support will query the server for these specific records (`b` is for `browse`,  `lb` is for `legacy browse`.)
