@@ -165,6 +165,8 @@ For example, at the dns.nmos.tv zone, add the following records for the Registra
     api_auth=false
     ```
 
+![Setting up the TXT record with Windows DNS](images/Windows-DNS-TXT.png)
+
 Repeat with `_nmos-registration` (assuming support for v1.2 and earlier is required).
 
 Repeat with `_nmos-query`.
