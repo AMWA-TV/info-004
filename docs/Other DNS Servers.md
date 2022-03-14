@@ -157,7 +157,7 @@ For example, at the dns.nmos.tv zone, add the following records for the Registra
 - Text (TXT)
   - Record name: reg-api-1._nmos-register._tcp
   - Fully qualified domain name (FQDN): reg-api-1._nmos-register._tcp.dns.nmos.tv
-  - Text:
+  - Text (with one record per line and without quotation marks, as follows):
     ```
     api_ver=v1.0,v1.1,v1.2,v1.3
     api_proto=http
