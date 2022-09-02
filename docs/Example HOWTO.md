@@ -133,8 +133,6 @@ reg-api-1._nmos-register._tcp        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_
 qry-api-1._nmos-query._tcp           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 ```
 
-```
-
 In both cases above the `SRV` records tell clients to access the server using port `80`. This would suit default HTTP access, but if HTTPS is used, this would need to be changed to `443`.
 
 Lastly we provide the IP addresses for the hosts in the system. This file can of course be expanded to contain names for all the hosts, end-points, and switches in the system, making debugging simpler.
@@ -145,7 +143,6 @@ Lastly we provide the IP addresses for the hosts in the system. This file can of
 dns1.example.com.         IN     A        192.168.0.18
 rds1.example.com.         IN     A        192.168.0.50
 ```
-
 
 
 ### Starting the service
@@ -192,7 +189,6 @@ Name:           rds1.example.com
 Address:        192.168.0.50
 ```
 
-
 We can see that the lookup was resolved by `192.168.0.18`, and resulted in the address for the `rds1` server being returned as `192.168.0.50`.
 
 The `dig` tool provides a little more info:
@@ -227,45 +223,116 @@ dns2.example.com. 3600    IN      A       192.168.0.20
 ;; WHEN: Tue Jul 13 19:58:50 IST 2021
 ;; MSG SIZE  rcvd: 134
 ```
+### Using Dig to Browse NMOS Related DNS Items
 
-### Checking the `SRV` records
-
-We can also use `dig` to check the presence of the `_nmos._register_.tcp` record:
-
+We can use `dig` to do a top down browse of the NMOS services being served by BIND9. First we simply 
+check if our DNS is offering up the NMOS services by looking at all the pointers to services our DNS is 
+providing:
 
 ```
-gp@example.com:~ # dig @localhost _nmos-register._tcp.example.com SRV
-
-; <<>> DiG 9.10.6 <<>> _nmos-register._tcp.example.com SRV
+$dig _services._dns-sd._udp.example.com PTR
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> PTR _services._dns-sd._udp.example.com
 ;; global options: +cmd
 ;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 44496
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 2, ADDITIONAL: 5
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 4132
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 1, ADDITIONAL: 2
 
 ;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 4096
 ;; QUESTION SECTION:
-;_nmos-register._tcp.example.com. IN      SRV
+;_services._dns-sd._udp.example.com. IN	PTR
 
 ;; ANSWER SECTION:
-_nmos-register._tcp.example.com. 3600 IN SRV      10 10 80 rds1.example.com.
-_nmos-register._tcp.example.com. 3600 IN SRV      20 10 80 rds2.example.com.
+_services._dns-sd._udp.example.com. 3600 IN PTR	_nmos-query._tcp.example.com.
+_services._dns-sd._udp.example.com. 3600 IN PTR	_nmos-register._tcp.example.com.
 
 ;; AUTHORITY SECTION:
-example.com.      3600    IN      NS      dns2.example.com.
-example.com.      3600    IN      NS      dns1.example.com.
+example.com.		3600	IN	NS	dns1.example.com.
 
 ;; ADDITIONAL SECTION:
-rds1.example.com. 3600    IN      A       192.168.0.50
-rds2.example.com. 3600    IN      A       192.168.0.51
-dns1.example.com. 3600    IN      A       192.168.0.18
-dns2.example.com. 3600    IN      A       192.168.0.20
+dns1.example.com.	3600	IN	A	192.168.0.18
 
-;; Query time: 41 msec
-;; SERVER: 192.168.0.18#53(192.168.0.18)
-;; WHEN: Tue Jul 13 20:00:53 IST 2021
-;; MSG SIZE  rcvd: 243
+;; Query time: 0 msec
+;; SERVER: 10.0.50.59#53(10.0.50.59)
+;; WHEN: Fri Sep 02 13:02:59 UTC 2022
+;; MSG SIZE  rcvd: 158
+
 ```
+
+We see in the ANSWER section that our DNS has the two entries we included in our BIND9 database file for our NMOS registry and NMOS query type services.
+
+
+### Checking the `PTR` records
+
+
+Next we use dig to query the DNS for PTR records associated 
+with the entries obtained in our last step. 
+
+```
+$dig _nmos-register._tcp.example.com PTR
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> _nmos-register._tcp.example.com PTR
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 60489
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;_nmos-register._tcp.example.com. IN	PTR
+
+;; ANSWER SECTION:
+_nmos-register._tcp.example.com. 3600 IN PTR	reg-api-1._nmos-register._tcp.example.com.
+
+;; AUTHORITY SECTION:
+example.com.		3600	IN	NS	dns1.example.com.
+
+;; ADDITIONAL SECTION:
+dns1.example.com.	3600	IN	A	192.168.0.18
+
+;; Query time: 0 msec
+;; SERVER: 10.0.50.59#53(10.0.50.59)
+;; WHEN: Fri Sep 02 13:18:03 UTC 2022
+;; MSG SIZE  rcvd: 119
+```
+
+### Checking the `SRV` records
+
+Finally we can resolve the actual host IP and port for the returned registry using
+
+```
+$dig reg-api-1._nmos-register._tcp.example.com SRV
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> reg-api-1._nmos-register._tcp.example.com SRV
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 25267
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;reg-api-1._nmos-register._tcp.example.com. IN SRV
+
+;; ANSWER SECTION:
+reg-api-1._nmos-register._tcp.example.com. 3600	IN SRV 10 10 80 rds1.example.com.
+
+;; AUTHORITY SECTION:
+example.com.		3600	IN	NS	dns1.example.com.
+
+;; ADDITIONAL SECTION:
+rds1.example.com.	3600	IN	A	192.168.0.50
+dns1.example.com.	3600	IN	A	192.168.0.18
+
+;; Query time: 0 msec
+;; SERVER: 10.0.50.59#53(10.0.50.59)
+;; WHEN: Fri Sep 02 13:19:23 UTC 2022
+;; MSG SIZE  rcvd: 157
+
+```
+
+The Additional section contains the resolved IP address for the host while the answer section shows we have the correct port that we included in the BIND9 database.
 
 ## Providing Back-up DNS (BIND) Servers
 
