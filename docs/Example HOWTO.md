@@ -336,14 +336,15 @@ The Additional section contains the resolved IP address for the host while the a
 
 ## Providing Back-up DNS (BIND) Servers
 
-To provide resilience, a secondary DNS server and a secondary RDS server should be provisioned. end-points should have both DNS IP addresses configured, allowing them to use the secondary DNS server, if the primary is no longer available.
+To provide resilience, a secondary DNS server and a secondary RDS server should be provisioned. End-points should have both DNS IP addresses configured, allowing them to use the secondary DNS server, if the primary is no longer available.
 
 BIND allows primary / secondary pairing, so that the zones and hosts configuration can be automatically updated on the secondary device, reducing the amount of duplication.
 
-There should be one `PTR` record for each instance of the service you wish to advertise. Here we have one Registration API and one Query API:
+There should be one `PTR` record for each instance of the service you wish to advertise. Here we have two Registration APIs and one Query API:
 
 ```
 _nmos-register._tcp     PTR     reg-api-1._nmos-register._tcp
+_nmos-register._tcp     PTR     reg-api-2._nmos-register._tcp
 _nmos-query._tcp        PTR     qry-api-1._nmos-query._tcp
 ```
 
@@ -382,3 +383,75 @@ dns2.example.com.    IN      A       192.168.0.20
 rds1.example.com.    IN      A       192.168.0.50
 rds2.example.com.    IN      A       192.168.0.51
 ```
+### Checking the `PTR` records for Multiple RDSs
+
+
+```
+$dig _nmos-register._tcp.example.com PTR
+ <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> _nmos-register._tcp.example.com PTR
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 48397
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 2, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;_nmos-register._tcp.example.com. IN	PTR
+
+;; ANSWER SECTION:
+_nmos-register._tcp.example.com. 3600 IN PTR	reg-api-2._nmos-register._tcp.example.com.
+_nmos-register._tcp.example.com. 3600 IN PTR	reg-api-1._nmos-register._tcp.example.com.
+
+;; AUTHORITY SECTION:
+example.com.		3600	IN	NS	dns2.example.com.
+example.com.		3600	IN	NS	dns1.example.com.
+
+;; ADDITIONAL SECTION:
+dns1.example.com.	3600	IN	A	192.168.0.18
+dns2.example.com.	3600	IN	A	192.168.0.20
+
+;; Query time: 0 msec
+;; SERVER: 10.0.50.59#53(10.0.50.59)
+;; WHEN: Tue Sep 06 07:29:22 UTC 2022
+;; MSG SIZE  rcvd: 178
+
+
+```
+
+As can be seen the DNS server provides two PTRs to the query.  Details on prioritization and TXT can be checked as well:
+
+
+```
+$dig reg-api-2._nmos-register._tcp.example.com SRV
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> reg-api-2._nmos-register._tcp.example.com SRV
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 5862
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 4
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;reg-api-2._nmos-register._tcp.example.com. IN SRV
+
+;; ANSWER SECTION:
+reg-api-2._nmos-register._tcp.example.com. 3600	IN SRV 20 10 80 rds2.example.com.
+
+;; AUTHORITY SECTION:
+example.com.		3600	IN	NS	dns1.example.com.
+example.com.		3600	IN	NS	dns2.example.com.
+
+;; ADDITIONAL SECTION:
+rds2.example.com.	3600	IN	A	192.168.0.51
+dns1.example.com.	3600	IN	A	192.168.0.18
+dns2.example.com.	3600	IN	A	192.168.0.20
+
+;; Query time: 0 msec
+;; SERVER: 10.0.50.59#53(10.0.50.59)
+;; WHEN: Tue Sep 06 07:32:09 UTC 2022
+;; MSG SIZE  rcvd: 192
+
+```
+
