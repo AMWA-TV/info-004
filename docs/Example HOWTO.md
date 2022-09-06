@@ -66,9 +66,9 @@ zone "example.com" {
 You will notice the line `file "/etc/bind/zones/db.example.com";` in the configuration above.  This is a pointer to the zone file for the domain `example.com`.  In order for the DNS server to work properly, you will need to create this zone file.  But first create the directory `/etc/bind/zones/`.
 
 ```
-gp@example.com:~ # cd /etc/bind
-gp@example.com:~ # mkdir zones
-gp@example.com:~ # cd zones
+# cd /etc/bind
+# mkdir zones
+# cd zones
 ```
 
 Next, use any text editor to create the file `db.example.com` in the `/etc/bind/zones` directory based upon the directions below.
@@ -181,7 +181,7 @@ We can verify that the host names of the RDS servers are configured:
 
 
 ```
-gp@example.com:~ # nslookup rds1.example.com localhost
+# nslookup rds1.example.com localhost
 Server:         192.168.0.18
 Address:        192.168.0.18#53
 
@@ -194,7 +194,7 @@ We can see that the lookup was resolved by `192.168.0.18`, and resulted in the a
 The `dig` tool provides a little more info:
 
 ```
-gp@example.com:~ # dig @localhost rds1.example.com
+# dig @localhost rds1.example.com
 
 ; <<>> DiG 9.10.6 <<>> rds1.example.com
 ;; global options: +cmd
