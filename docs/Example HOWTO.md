@@ -352,11 +352,11 @@ If more than one RDS server can be used, then two records can be provided, with 
 
 ```
 ; NMOS RDS services
-; Primary RDS
-reg-api-1._nmos-register._tcp.example.com.     3600    IN SRV  10      10      80      rds1.example.com.
+; High Priority RDS                             TTL   Class  SRV  Priority  Weight  Port     Target
+reg-api-1._nmos-register._tcp.example.com.     3600    IN    SRV     10       10      80      rds1.example.com.
 
-; Secondary RDS
-reg-api-2._nmos-register._tcp.example.com.     3600    IN SRV  20      10      80      rds2.example.com.
+; Lower Priority RDS
+reg-api-2._nmos-register._tcp.example.com.     3600    IN    SRV     20       10      80      rds2.example.com.
 ```
 
 We also provide `TXT` record for the both the primary and secondary RDS servers, with information relevant to the IS-04 specification. We also include priority information here as many DNS-SD clients ignore the priority and weight information in `SRV` records.
@@ -383,7 +383,7 @@ dns2.example.com.    IN      A       192.168.0.20
 rds1.example.com.    IN      A       192.168.0.50
 rds2.example.com.    IN      A       192.168.0.51
 ```
-### Checking the `PTR` records for Multiple RDSs
+### Checking the `DNS` records for Multiple RDSs
 
 
 ```
@@ -454,4 +454,79 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ;; MSG SIZE  rcvd: 192
 
 ```
+### Complete BIND9 Database File
 
+Below is the complete BIND9 domain file described about.  Configuring your BIND9 domain with this file should allow you to verify your setup for an example.com domain. To setup for a different domain then changes to the file are minimal.
+
+```
+
+;We begin by defining several required DNS parameters.
+
+$TTL 3600
+@       IN      SOA     dns1.example.com. admin.example.com. (
+           20210713     ; Serial
+               3600     ; Refresh
+                600     ; Retry
+            2419200     ; Expire
+             604800 )   ; Negative Cache TTL
+
+;Then we define our DNS servers for this zone. End-points should be configured with one or both of these DNS server
+
+; DNS servers
+        IN      NS      dns1.example.com.
+        IN      NS      dns2.example.com.
+
+;We add the following PTR records to indicate the server supports Service Discovery.  Clients looking for DNS-SD support will query the server for these specific records (`b` is for `browse`,  `lb` is for `legacy browse`.)
+
+; These lines indicate to clients that this server supports DNS Service Discovery
+b._dns-sd._udp  IN      PTR     @
+lb._dns-sd._udp IN      PTR     @
+
+;Next we define the NMOS services provided by this server:
+
+; These lines indicate to clients which NMOS service types this server advertises:
+_services._dns-sd._udp  PTR     _nmos-register._tcp
+_services._dns-sd._udp  PTR     _nmos-query._tcp
+
+;There should be one `PTR` record for each instance of the service you wish to advertise. 
+; Here we have  service available through the Registration API and one service available through the Query API:
+
+_nmos-register._tcp     PTR     reg-api-1._nmos-register._tcp
+_nmos-register._tcp     PTR     reg-api-2._nmos-register._tcp
+_nmos-query._tcp        PTR     qry-api-1._nmos-query._tcp
+
+
+;Now we add `SRV` records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.example.com`.
+
+; NMOS RDS and Query Services       Type   Priority  Weight   Port   Host 
+;reg-api-1._nmos-register._tcp        SRV     10        10      80    rds1.example.com.
+;reg-api-2._nmos-register._tcp        SRV     20        10      80    rds2.example.com.
+
+; NMOS RDS services
+; High Priority RDS                             TTL   Class  SRV  Priority  Weight  Port     Target
+reg-api-1._nmos-register._tcp.example.com.     3600    IN    SRV     10       10      80      rds1.example.com.
+
+; Lower Priority RDS
+reg-api-2._nmos-register._tcp.example.com.     3600    IN    SRV     20       10      80      rds2.example.com.
+
+qry-api-1._nmos-query._tcp           SRV     10        10      80    rds1.example.com.
+
+;We add `TXT` records which provide information relevant to the IS-04 specification
+
+; Additional metadata relevant to the IS-04 specification. See IS-04 specification section "Discovery: Registered Operation"
+reg-api-1._nmos-register._tcp        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=10" "api_auth=false"
+reg-api-2._nmos-register._tcp        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=https" "pri=20" "api_auth=false"
+
+qry-api-1._nmos-query._tcp           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
+
+;In both cases above the `SRV` records tell clients to access the server using port `80`. This would suit default HTTP access, but if HTTPS is used, this would need to be changed to `443`.
+
+;Lastly we provide the IP addresses for the hosts in the system. This file can of course be expanded to contain names for all the hosts, end-points, and switches in the system, making debugging simpler.
+
+; Nameserver records    Class  Type        Target
+dns1.example.com.        IN      A       192.168.0.18
+dns2.example.com.        IN      A       192.168.0.20
+rds1.example.com.        IN      A       192.168.0.50
+rds2.example.com.        IN      A       192.168.0.51
+
+```
