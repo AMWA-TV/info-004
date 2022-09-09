@@ -489,7 +489,7 @@ _services._dns-sd._udp  PTR     _nmos-register._tcp
 _services._dns-sd._udp  PTR     _nmos-query._tcp
 
 ;There should be one `PTR` record for each instance of the service you wish to advertise. 
-; Here we have  service available through the Registration API and one service available through the Query API:
+; Here we have two instances of the Registration API service and one instance of the Query API service:
 
 _nmos-register._tcp     PTR     reg-api-1._nmos-register._tcp
 _nmos-register._tcp     PTR     reg-api-2._nmos-register._tcp
