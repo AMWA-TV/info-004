@@ -470,7 +470,7 @@ $TTL 3600
             2419200     ; Expire
              604800 )   ; Negative Cache TTL
 
-;Then we define our DNS servers for this zone. End-points should be configured with one or both of these DNS server
+;Then we define our DNS servers for this zone. End-points should be configured with one or both of these DNS servers.
 
 ; DNS servers
         IN      NS      dns1.example.com.
