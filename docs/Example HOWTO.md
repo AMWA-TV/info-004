@@ -515,7 +515,7 @@ qry-api-1._nmos-query._tcp           SRV     10        10      80    rds1.exampl
 
 ; Additional metadata relevant to the IS-04 specification. See IS-04 specification section "Discovery: Registered Operation"
 reg-api-1._nmos-register._tcp        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=10" "api_auth=false"
-reg-api-2._nmos-register._tcp        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=https" "pri=20" "api_auth=false"
+reg-api-2._nmos-register._tcp        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=20" "api_auth=false"
 
 qry-api-1._nmos-query._tcp           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 
