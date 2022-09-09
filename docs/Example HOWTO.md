@@ -230,7 +230,7 @@ check if our DNS is offering up the NMOS services by looking at all the pointers
 providing:
 
 ```
-$dig _services._dns-sd._udp.example.com PTR
+# dig _services._dns-sd._udp.example.com PTR
 ; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> PTR _services._dns-sd._udp.example.com
 ;; global options: +cmd
 ;; Got answer:
@@ -269,7 +269,7 @@ Next we use dig to query the DNS for PTR records associated
 with the entries obtained in our last step. 
 
 ```
-$dig _nmos-register._tcp.example.com PTR
+# dig _nmos-register._tcp.example.com PTR
 
 ; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> _nmos-register._tcp.example.com PTR
 ;; global options: +cmd
@@ -302,7 +302,7 @@ dns1.example.com.	3600	IN	A	192.168.0.18
 Finally we can resolve the actual host IP and port for the returned registry using
 
 ```
-$dig reg-api-1._nmos-register._tcp.example.com SRV
+# dig reg-api-1._nmos-register._tcp.example.com SRV
 
 ; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> reg-api-1._nmos-register._tcp.example.com SRV
 ;; global options: +cmd
@@ -334,7 +334,7 @@ dns1.example.com.	3600	IN	A	192.168.0.18
 
 The Additional section contains the resolved IP address for the host while the answer section shows we have the correct port that we included in the BIND9 database.
 
-## Providing Back-up DNS (BIND) Servers
+## Providing Back-up Servers
 
 To provide resilience, a secondary DNS server and a secondary RDS server should be provisioned. End-points should have both DNS IP addresses configured, allowing them to use the secondary DNS server, if the primary is no longer available.
 
@@ -387,7 +387,7 @@ rds2.example.com.    IN      A       192.168.0.51
 
 
 ```
-$dig _nmos-register._tcp.example.com PTR
+# dig _nmos-register._tcp.example.com PTR
  <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> _nmos-register._tcp.example.com PTR
 ;; global options: +cmd
 ;; Got answer:
@@ -423,7 +423,7 @@ As can be seen the DNS server provides two PTRs to the query.  Details on priori
 
 
 ```
-$dig reg-api-2._nmos-register._tcp.example.com SRV
+# dig reg-api-2._nmos-register._tcp.example.com SRV
 
 ; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> reg-api-2._nmos-register._tcp.example.com SRV
 ;; global options: +cmd
@@ -496,7 +496,7 @@ _nmos-register._tcp     PTR     reg-api-2._nmos-register._tcp
 _nmos-query._tcp        PTR     qry-api-1._nmos-query._tcp
 
 
-;Now we add `SRV` records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.example.com`.
+; Now we add `SRV` records that return the targets for the two registration service instances and the query service instance. 
 
 ; NMOS RDS services
 ; High Priority RDS                             TTL   Class  SRV  Priority  Weight  Port     Target
