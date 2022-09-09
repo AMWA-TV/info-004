@@ -498,10 +498,6 @@ _nmos-query._tcp        PTR     qry-api-1._nmos-query._tcp
 
 ;Now we add `SRV` records that return the URL for the registration and query servers.  In this case, both of the records point to `rds1.example.com`.
 
-; NMOS RDS and Query Services       Type   Priority  Weight   Port   Host 
-;reg-api-1._nmos-register._tcp        SRV     10        10      80    rds1.example.com.
-;reg-api-2._nmos-register._tcp        SRV     20        10      80    rds2.example.com.
-
 ; NMOS RDS services
 ; High Priority RDS                             TTL   Class  SRV  Priority  Weight  Port     Target
 reg-api-1._nmos-register._tcp.example.com.     3600    IN    SRV     10       10      80      rds1.example.com.
