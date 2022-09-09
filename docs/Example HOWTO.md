@@ -519,7 +519,7 @@ reg-api-2._nmos-register._tcp        TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_
 
 qry-api-1._nmos-query._tcp           TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
 
-;In both cases above the `SRV` records tell clients to access the server using port `80`. This would suit default HTTP access, but if HTTPS is used, this would need to be changed to `443`.
+;In both cases above the `SRV` records tell clients to access the server using port `80`. This would suit default HTTP access (indicated by `api_proto=http` in the `TXT` records). If HTTPS is used, this would need to be changed to `443`.
 
 ;Lastly we provide the IP addresses for the hosts in the system. This file can of course be expanded to contain names for all the hosts, end-points, and switches in the system, making debugging simpler.
 
