@@ -456,7 +456,7 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ```
 ### Complete BIND9 Database File
 
-Below is the complete BIND9 domain file described about.  Configuring your BIND9 domain with this file should allow you to verify your setup for an example.com domain. To setup for a different domain then changes to the file are minimal.
+Below is the complete BIND9 domain file described above. Configuring your BIND9 domain with this file should allow you to verify your setup for an example.com domain. To set up for a different domain, the changes to the file would be minimal.
 
 ```
 
