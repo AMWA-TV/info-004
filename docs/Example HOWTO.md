@@ -102,7 +102,7 @@ Then we define our DNS server for this zone. Endpoints should be configured with
 
 ```
 ; DNS server
-example.com        IN      NS      dns1.example.com.
+example.com.        IN      NS      dns1.example.com.
 ```
 
 We add the following PTR records to indicate the server supports Service Discovery.
@@ -401,7 +401,7 @@ rds1.example.com.         IN     A      192.168.0.50
 rds2.example.com.         IN     A      192.168.0.51
 ```
 
-### Checking the `DNS` records for Multiple RDSs
+### Checking the DNS records for Multiple RDSs
 
 ```
 # dig _nmos-register._tcp.example.com PTR
@@ -490,8 +490,8 @@ $TTL 3600
 ; Endpoints should be configured with one or both of these DNS servers.
 
 ; DNS servers
-example.com        IN      NS      dns1.example.com.
-example.com        IN      NS      dns2.example.com.
+example.com.        IN      NS      dns1.example.com.
+example.com.        IN      NS      dns2.example.com.
 
 ; We add the following PTR records to indicate the server supports Service Discovery.
 ; Clients looking for DNS-SD support will query the server for these specific records (`b` is for "browse", `lb` is for "legacy browse".)
