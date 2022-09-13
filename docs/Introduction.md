@@ -18,19 +18,19 @@ End-points in the NMOS environment need to be able to find the Registration and 
 
 DNS (Domain Name System) provides a mechanism that allows end-points to resolve IP addresses from hostnames. DNS-SD provides the additional ability to discover hosts that provide specific network services from service type records.
 
-DNS-SD can be achieved using mDNS (multicast DNS) which is a very simple serverless peer-to-peer technology. This works well for small flat (layer 2) networks, but does not scale well to larger layer 3 networks that we generally see for ST2110 implementations.
+DNS-SD can be achieved using mDNS (multicast DNS) which is a very simple serverless peer-to-peer technology. This works well for small flat (layer 2) networks, but does not scale well to larger layer 3 networks that we generally see for ST 2110 implementations.
 
 An alternative to mDNS is to use a unicast, server-based name resolution service, with requests and queries being provided over routable unicast transport. This alternative provides scalability and integration into the wider IT infrastructure allowing, for example, the use of DHCP to dynamically update DNS records.
 
-For most ST2110 systems, unicast DNS-SD methodology provides the most appropriate choice. DNS-SD’s unicast, routable characteristics provide scalability, and removes the inherent mDNS limitation of operation only within a subnet.
+For most ST 2110 systems, unicast DNS-SD methodology provides the most appropriate choice. DNS-SD’s unicast, routable characteristics provide scalability, and removes the inherent mDNS limitation of operation only within a subnet.
 
-DNS-SD provides discoverability of the RDS server(s). The availability of DNS also makes operations and discovery of misconfigurations simpler by making it possible to use and view hostnames rather than IP addresses. In addition, if DHCP is used in the ST2110 system, then the coupling of the DHCP system and the DNS infrastructure will further simplify operations and debugging by providing human readable abstractions of IP addresses.
+DNS-SD provides discoverability of the RDS server(s). The availability of DNS also makes operations and discovery of misconfigurations simpler by making it possible to use and view hostnames rather than IP addresses. In addition, if DHCP is used in the ST 2110 system, then the coupling of the DHCP system and the DNS infrastructure will further simplify operations and debugging by providing human readable abstractions of IP addresses.
 
 The following items highlight key aspects of use of DNS-SD in conjunction with DHCP:
 
 - Hosts can find the DNS address through DHCP, or the DNS server IP address can be provided directly to a host via configuration.
-- Hosts make service discovery requests of DNS, for the service _nmos-register._tcp
-- The result will typically be an RDS hostname, or set of RDS hostnames
+- Hosts make service discovery requests of DNS, for example a Node needs the service type _nmos-register._tcp
+- After selecting an appropriate service instance, following the Discovery section of the IS-04 specification, the result will typically be an RDS hostname, or set of RDS hostnames
 - Hosts request DNS to resolve RDS hostname(s)
 - Hosts can now talk to RDS(s) via the resolved IP addresses.
 
