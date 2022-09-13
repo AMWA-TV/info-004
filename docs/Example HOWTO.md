@@ -468,6 +468,7 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ;; WHEN: Tue Sep 06 07:32:09 UTC 2022
 ;; MSG SIZE  rcvd: 192
 ```
+And now the TXT record for the same service:
 
 ### Complete BIND9 Database File
 
