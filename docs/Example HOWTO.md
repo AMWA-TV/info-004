@@ -434,9 +434,11 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ;; MSG SIZE  rcvd: 178
 ```
 
-As can be seen the DNS server provides two PTRs to the query.
-Details on prioritization and TXT can be checked as well:
-First we query for the SRV.
+As can be seen the DNS server answers with two PTR records to this query.
+Details on the priority and other metadata for each service instance can be checked as well.
+
+First we query for the SRV record:
+
 ```
 # dig reg-api-2._nmos-register._tcp.example.com SRV
 
@@ -468,7 +470,39 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ;; WHEN: Tue Sep 06 07:32:09 UTC 2022
 ;; MSG SIZE  rcvd: 192
 ```
+
 And now the TXT record for the same service:
+
+```
+# dig reg-api-2._nmos-register._tcp.example.com TXT
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> reg-api-2._nmos-register._tcp.example.com TXT
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 41920
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;reg-api-2._nmos-register._tcp.example.com. IN TXT
+
+;; ANSWER SECTION:
+reg-api-2._nmos-register._tcp.example.com. 3600	IN TXT "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=20" "api_auth=false"
+
+;; AUTHORITY SECTION:
+example.com.		3600	IN	NS	dns2.example.com.
+example.com.		3600	IN	NS	dns1.example.com.
+
+;; ADDITIONAL SECTION:
+dns1.example.com.	3600	IN	A	192.168.0.18
+dns2.example.com.	3600	IN	A	192.168.0.20
+
+;; Query time: 0 msec
+;; SERVER: 10.0.50.59#53(10.0.50.59)
+;; WHEN: Tue Sep 13 09:59:12 UTC 2022
+;; MSG SIZE  rcvd: 217
+```
 
 ### Complete BIND9 Database File
 
