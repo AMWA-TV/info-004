@@ -37,17 +37,17 @@ We assume that the Linux installation has been completed, the server has a stati
 BIND9 can be installed from the Linux command line (as root), with the following:
 
 CentOS 7
-```
-sudo yum install bind bind-utils
+```sh
+yum install bind bind-utils
 ```
 
 Ubuntu
-```
+```sh
 apt update && apt install bind9 bind-utils
 ```
 
 Raspbian
-```
+```sh
 apt update && apt install bind9
 ```
 
@@ -57,8 +57,14 @@ In this example, we will be working with the domain `example.com`.
 We must add this domain to the configuration file of the DNS server so that it knows it is responsible for responding to queries for this domain (referred to as a 'zone' in BIND).
 Zone information is kept in the following directories, depending upon your Linux version:
 
-CentOS 7 `/etc/bind/named.conf`
-Ubuntu/Raspbian `/etc/bind/named.conf.local`
+CentOS 7
+```
+/etc/bind/named.conf
+```
+Ubuntu/Raspbian
+```
+/etc/bind/named.conf.local
+```
 
 To add the zone, enter the information below in the appropriate configuration file for your distribution.
 
@@ -69,22 +75,20 @@ zone "example.com" {
 };
 ```
 
-### Configuring the Zone file
+### Configuring the zone file
 
 You will notice the line `file "/etc/bind/zones/db.example.com";` in the configuration above.
 This is a pointer to the zone file for the domain `example.com`.
 In order for the DNS server to work properly, you will need to create this zone file.
 But first create the directory `/etc/bind/zones/`.
 
-```
-# cd /etc/bind
-# mkdir zones
-# cd zones
+```sh
+cd /etc/bind
+mkdir zones
+cd zones
 ```
 
 Next, use any text editor to create the file `db.example.com` in the `/etc/bind/zones` directory based upon the directions below.
-
-### Configuring the hosts / TXT / SRV file
 
 We begin by defining several required DNS parameters.
 
@@ -106,7 +110,7 @@ example.com.        IN      NS      dns1.example.com.
 ```
 
 We add the following PTR records to indicate the server supports Service Discovery.
-Clients looking for DNS-SD support will query the server for these specific records (`b` is for "browse", `lb` is for "legacy browse".)
+Clients looking for DNS-SD support will query the server for these specific records (`b` is for "browse", `lb` is for "legacy browse").
 
 ```
 ; These lines indicate to clients that this server supports DNS Service Discovery.
@@ -139,7 +143,7 @@ reg-api-1._nmos-register._tcp.example.com.     SRV     10        10      80    r
 qry-api-1._nmos-query._tcp.example.com.        SRV     10        10      80    rds1.example.com.
 ```
 
-We add `TXT` records which provide information relevant to the IS-04 specification.
+We add `TXT` records which provide information about the service instances according to the IS-04 specification.
 
 ```
 reg-api-1._nmos-register._tcp.example.com.     TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=0" "api_auth=false"
@@ -163,13 +167,13 @@ rds1.example.com.         IN     A      192.168.0.50
 Once the files are in place, the service can be started and made permanent (will run after a reload/reboot of the server):
 
 CentOS 7
-```
+```sh
 systemctl restart named
 systemctl enable named
 ```
 
 Ubuntu/Raspbian
-```
+```sh
 systemctl restart bind9
 systemctl enable bind9
 ```
@@ -179,7 +183,7 @@ systemctl enable bind9
 Often, Linux default will prevent DNS through the firewall, so you have issues with connectivity to the DNS server now running.
 The following will enable DNS through the CentOS 7 firewall, and make this permanent:
 
-```
+```sh
 firewall-cmd --permanent --add-port=53/udp
 firewall-cmd --reload
 ```
@@ -238,13 +242,14 @@ dns2.example.com. 3600    IN      A       192.168.0.20
 ;; MSG SIZE  rcvd: 134
 ```
 
-### Using Dig to Browse NMOS Related DNS Items
+### Using `dig` to browse NMOS related DNS records
 
 We can use `dig` to do a top down browse of the NMOS services being served by BIND9.
-First we simply check if our DNS is offering up the NMOS services by looking at all the pointers to services our DNS is providing:
+First we simply check if our DNS is offering up the NMOS services by looking at all the pointers to service types our DNS is providing:
 
 ```
 # dig _services._dns-sd._udp.example.com PTR
+
 ; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> PTR _services._dns-sd._udp.example.com
 ;; global options: +cmd
 ;; Got answer:
@@ -272,11 +277,11 @@ dns1.example.com.	3600	IN	A	192.168.0.18
 ;; MSG SIZE  rcvd: 158
 ```
 
-We see in the ANSWER section that our DNS has the two entries we included in our BIND9 database file for our NMOS registry and NMOS query type services.
+We see in the ANSWER section that our DNS has the two entries we included in our BIND9 database file for our NMOS registry and NMOS query service types.
 
 ### Checking the `PTR` records
 
-Next we use dig to query the DNS for PTR records associated with the entries obtained in our last step. 
+Next we use dig to query the DNS for `PTR` records associated with the entries obtained in our last step. 
 
 ```
 # dig _nmos-register._tcp.example.com PTR
@@ -309,7 +314,7 @@ dns1.example.com.	3600	IN	A	192.168.0.18
 
 ### Checking the `SRV` records
 
-Finally we can resolve the actual host IP and port for the returned registry using
+Finally we can resolve the actual host IP and port for the returned registry using:
 
 ```
 # dig reg-api-1._nmos-register._tcp.example.com SRV
@@ -343,7 +348,7 @@ dns1.example.com.	3600	IN	A	192.168.0.18
 
 The Additional Section contains the resolved IP address for the host while the answer section shows we have the correct port that we included in the BIND9 database.
 
-## Providing Back-up Servers
+## Providing Backup Servers
 
 To provide resilience, a secondary DNS server and a secondary RDS server should be provisioned.
 Endpoints should have both DNS IP addresses configured, allowing them to use the secondary DNS server, if the primary is no longer available.
@@ -371,8 +376,9 @@ reg-api-1._nmos-register._tcp.example.com.     SRV     10        10      80    r
 reg-api-2._nmos-register._tcp.example.com.     SRV     20        10      80    rds2.example.com.
 ```
 
-We also provide `TXT` record for the both the primary and secondary service instances, with information relevant to the IS-04 specification.
+We also provide `TXT` record for the both the primary and secondary service instances, with information required by the IS-04 specification.
 NMOS also includes priority information here as many DNS-SD clients ignore the priority and weight information in `SRV` records.
+IS-04 specifies how these `TXT` records are used during service discovery.
 
 ```
 ; High Priority Registration Service
@@ -401,11 +407,12 @@ rds1.example.com.         IN     A      192.168.0.50
 rds2.example.com.         IN     A      192.168.0.51
 ```
 
-### Checking the DNS records for Multiple RDSs
+### Checking the DNS records for multiple RDSs
 
 ```
 # dig _nmos-register._tcp.example.com PTR
- <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> _nmos-register._tcp.example.com PTR
+
+; <<>> DiG 9.11.4-P2-RedHat-9.11.4-26.P2.amzn2.5.2 <<>> _nmos-register._tcp.example.com PTR
 ;; global options: +cmd
 ;; Got answer:
 ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 48397
@@ -434,10 +441,10 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ;; MSG SIZE  rcvd: 178
 ```
 
-As can be seen the DNS server answers with two PTR records to this query.
-Details on the priority and other metadata for each service instance can be checked as well.
+As can be seen the DNS server answers with two `PTR` records to this query.
+Details on the priority and other information for each service instance can be checked as well.
 
-First we query for the SRV record:
+First we query for the `SRV` record:
 
 ```
 # dig reg-api-2._nmos-register._tcp.example.com SRV
@@ -471,7 +478,7 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ;; MSG SIZE  rcvd: 192
 ```
 
-And now the TXT record for the same service:
+And now the `TXT` record for the same service:
 
 ```
 # dig reg-api-2._nmos-register._tcp.example.com TXT
@@ -504,10 +511,10 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 ;; MSG SIZE  rcvd: 217
 ```
 
-### Complete BIND9 Database File
+## Complete BIND9 Database File
 
 Below is the complete BIND9 domain file described above.
-Configuring your BIND9 domain with this file should allow you to verify your setup for an example.com domain.
+Configuring your BIND9 domain with this file should allow you to verify your setup for an `example.com` domain.
 To set up for a different domain, the changes to the file would be minimal.
 
 ```
@@ -529,7 +536,7 @@ example.com.        IN      NS      dns1.example.com.
 example.com.        IN      NS      dns2.example.com.
 
 ; We add the following PTR records to indicate the server supports Service Discovery.
-; Clients looking for DNS-SD support will query the server for these specific records (`b` is for "browse", `lb` is for "legacy browse".)
+; Clients looking for DNS-SD support will query the server for these specific records (`b` is for "browse", `lb` is for "legacy browse").
 
 ; These lines indicate to clients that this server supports DNS Service Discovery.
 b._dns-sd._udp  IN      PTR     @
@@ -560,8 +567,9 @@ reg-api-2._nmos-register._tcp.example.com.     SRV     20        10      80    r
 ; High Priority Query Service
 qry-api-1._nmos-query._tcp.example.com.        SRV     10        10      80    rds1.example.com.
 
-; We also provide `TXT` record for the both the primary and secondary service instances, with information relevant to the IS-04 specification.
+; We also provide `TXT` record for the both the primary and secondary service instances, with information required by the IS-04 specification.
 ; NMOS also includes priority information here as many DNS-SD clients ignore the priority and weight information in `SRV` records.
+; IS-04 specifies how these `TXT` records are used during service discovery.
 
 ; High Priority Registration Service
 reg-api-1._nmos-register._tcp.example.com.     TXT     "api_ver=v1.0,v1.1,v1.2,v1.3" "api_proto=http" "pri=10" "api_auth=false"
