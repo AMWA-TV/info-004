@@ -190,16 +190,15 @@ firewall-cmd --reload
 
 ## Testing
 
-You can test the functionality of the new DNS server right from the server itself.
-You can also run these tests from a Linux box or Mac by setting the `nameserver` portion of the Linux or Mac box network configuration to point to your new DNS server.
-If you run the tests below from a separate computer, omit `localhost` or `@localhost` from the commands below.
+You can run these tests from a Linux box or Mac after setting the `nameserver` portion of the network configuration to point to your new DNS server, or by using the `server` command line option of `nslookup` and `@server` option of `dig`.
+You can also test the functionality of the new DNS server right from the server itself by adding `localhost`/`@localhost` to the `nslookup`/`dig` commands below.
 
 There are a couple of tools that allow the DNS operation to be tested.
 
 We can verify that the host names of the RDS servers are configured:
 
 ```
-# nslookup rds1.example.com localhost
+# nslookup rds1.example.com
 Server:         192.168.0.18
 Address:        192.168.0.18#53
 
@@ -212,7 +211,7 @@ We can see that the lookup was resolved by `192.168.0.18`, and resulted in the a
 The `dig` tool provides a little more info:
 
 ```
-# dig @localhost rds1.example.com
+# dig rds1.example.com
 
 ; <<>> DiG 9.10.6 <<>> rds1.example.com
 ;; global options: +cmd
