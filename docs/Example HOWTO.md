@@ -436,7 +436,7 @@ dns2.example.com.	3600	IN	A	192.168.0.20
 
 As can be seen the DNS server provides two PTRs to the query.
 Details on prioritization and TXT can be checked as well:
-
+First we query for the SRV.
 ```
 # dig reg-api-2._nmos-register._tcp.example.com SRV
 
