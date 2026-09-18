@@ -1,7 +1,8 @@
 # AMWA INFO-004: NMOS Implementation Guide for DNS-SD
 
 [![Lint Status](https://github.com/AMWA-TV/info-004/workflows/Lint/badge.svg)](https://github.com/AMWA-TV/info-004/actions?query=workflow%3ALint)
-[![Render Status](https://github.com/AMWA-TV/info-004/workflows/Render/badge.svg)](https://github.com/AMWA-TV/info-004/actions?query=workflow%3ARender)
+[![Zensical Render Status](https://github.com/AMWA-TV/info-004/actions/workflows/docs.yml/badge.svg)](https://github.com/AMWA-TV/info-004/actions/workflows/docs.yml)
+[![Legacy Render Status](https://github.com/AMWA-TV/info-004/workflows/Render/badge.svg)](https://github.com/AMWA-TV/info-004/actions?query=workflow%3ARender)
 
 This repository holds the source for this Implementation Guide, part of the family of [Networked Media Open Specifications](https://specs.amwa.tv/nmos) from the [Advanced Media Workflow Association](https://amwa.tv)
 
