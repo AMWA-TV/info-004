@@ -1,0 +1,27 @@
+{
+  "amwa_id": "INFO-004",
+  "url": "https://specs.amwa.tv/info-004",
+  "name": "Implementation Guide for DNS-SD",
+  "status": "AMWA Specification",
+  "repo_name": "info-004",
+  "alt_repo_name": "nmos-dns-sd-implementation-guide",
+  "repo_url": "https://github.com/AMWA-TV/info-004",
+  "releases": null,
+  "default_branch": "main",
+  "show_in_index": true,
+  "intro": {
+    "what_does_it_do": [
+      "Explains the use of DNS-SD in NMOS environments.",
+      "Provides a practical \"how-to\" example of how to set up a BIND9 DNS server for NMOS use.",
+      "Gives example configurations for other DNS servers."
+    ],
+    "why_does_it_matter": [
+      "DNS Service Discovery (DNS-SD) provides a simple and flexible method to discover NMOS Registration and Discovery Server (RDS) Services.",
+      "The NMOS RDS provides information about NMOS nodes, devices, and APIs. There must be a common way to locate the RDS in order for an NMOS component to register itself for discovery by other NMOS components."
+    ],
+    "how_does_it_work": [
+      "The fact that the DNS server provides Service Discovery",
+      "Where the NMOS RDS may be found on the network"
+    ]
+  }
+}

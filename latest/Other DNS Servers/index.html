@@ -1,0 +1,538 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://specs.amwa.tv/new/info-004/latest/Other%20DNS%20Servers/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.62">
+    
+    
+      
+        <title>Examples for other DNS Servers - AMWA INFO-004: NMOS Implementation Guide for DNS-SD</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ce62732f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../stylesheets/amwa-branding.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#examples-for-other-dns-servers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./.." title="AMWA INFO-004: NMOS Implementation Guide for DNS-SD" class="md-header__button md-logo" aria-label="AMWA INFO-004: NMOS Implementation Guide for DNS-SD" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AMWA INFO-004: NMOS Implementation Guide for DNS-SD
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Examples for other DNS Servers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/AMWA-TV/info-004" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AMWA-TV/info-004
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="AMWA INFO-004: NMOS Implementation Guide for DNS-SD" class="md-nav__button md-logo" aria-label="AMWA INFO-004: NMOS Implementation Guide for DNS-SD" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 5v16M20.001 19A2 2 0 0 0 22 17V5a2 2 0 0 0-1.999-2L16 3.002A5 5 0 0 0 12 5a5 5 0 0 0-4-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 1.999 2H8a5 5 0 0 1 4 2 5 5 0 0 1 4-2z"/></svg>
+
+    </a>
+    AMWA INFO-004: NMOS Implementation Guide for DNS-SD
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AMWA-TV/info-004" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AMWA-TV/info-004
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  AMWA INFO-004: NMOS Implementation Guide for DNS-SD
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linux-bind9" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Linux BIND9
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dnsmasq" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Dnsmasq
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tinydns" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        TinyDNS
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Windows DNS
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+  
+
+
+<h1 id="examples-for-other-dns-servers">Examples for other DNS Servers</h1>
+<p>The examples below were previously on the NMOS Wiki, and show an equivalent configuration for BIND9, Dnsmasq, Windows DNS and TinyDNS.</p>
+<blockquote>
+<p>Note that the domains, IP addresses, etc. below differ to the examples in the <a href="../Example%20HOWTO/">main example HOWTO</a>.</p>
+</blockquote>
+<h2 id="linux-bind9">Linux BIND9</h2>
+<p>The following lines should be included in a zone file. Note that '@' refers to the domain which the zone file is authoritative for (in this case dns.nmos.tv). SOA records and similar are omitted in this example.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">; These lines indicate to clients that this server supports DNS Service Discovery</span>
+<span class="nv">b._dns-sd._udp</span><span class="w">  </span><span class="nv">IN</span><span class="w">      </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">@</span>
+<span class="nv">lb._dns-sd._udp</span><span class="w"> </span><span class="nv">IN</span><span class="w">      </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">@</span>
+
+<span class="c1">; These lines indicate to clients which service types this server may advertise</span>
+<span class="nv">_services._dns-sd._udp</span><span class="w">  </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">_nmos-register._tcp</span>
+<span class="nv">_services._dns-sd._udp</span><span class="w">  </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">_nmos-registration._tcp</span>
+<span class="nv">_services._dns-sd._udp</span><span class="w">  </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">_nmos-query._tcp</span>
+
+<span class="c1">; These lines give the fully qualified DNS names to the IP addresses of the hosts which we'd like to discover</span>
+<span class="c1">; This example uses a domain of 'dns.nmos.tv'. We recommend using a subdomain of a domain name which you own.</span>
+<span class="nv">registration1.dns.nmos.tv.</span><span class="w">      </span><span class="nv">IN</span><span class="w">      </span><span class="nv">A</span><span class="w">       </span><span class="nv">192.168.200.5</span>
+<span class="nv">query1.dns.nmos.tv.</span><span class="w">     </span><span class="nv">IN</span><span class="w">      </span><span class="nv">A</span><span class="w">       </span><span class="nv">192.168.200.6</span>
+
+<span class="c1">; There should be one PTR record for each instance of the service you wish to advertise.</span>
+<span class="c1">; Here we have one Registration API (_nmos-registration._tcp) and one Query API (_nmos-query._tcp)</span>
+<span class="c1">; From v1.3, the Registration API switches to use a new name (_nmos-register._tcp)</span>
+<span class="nv">_nmos-register._tcp</span><span class="w">     </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">reg-api-1._nmos-register._tcp</span>
+<span class="nv">_nmos-registration._tcp</span><span class="w"> </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">reg-api-1._nmos-registration._tcp</span>
+<span class="nv">_nmos-query._tcp</span><span class="w">        </span><span class="nv">PTR</span><span class="w">     </span><span class="nv">qry-api-1._nmos-query._tcp</span>
+
+<span class="c1">; Next we have a SRV and a TXT record corresponding to each PTR above, first the Registration API</span>
+<span class="c1">; The SRV links the PTR name to a resolvable DNS name (see the A records above) and identify the port which the API runs on</span>
+<span class="c1">; The TXT records indicate additional metadata relevant to the IS-04 spec</span>
+<span class="nv">reg-api-1._nmos-register._tcp</span><span class="w">   </span><span class="nv">SRV</span><span class="w">     </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="nv">registration1.dns.nmos.tv.</span>
+<span class="nv">reg-api-1._nmos-register._tcp</span><span class="w">   </span><span class="nv">TXT</span><span class="w">     </span><span class="s">"api_ver=v1.0,v1.1,v1.2,v1.3"</span><span class="w"> </span><span class="s">"api_proto=http"</span><span class="w"> </span><span class="s">"pri=0"</span><span class="w"> </span><span class="s">"api_auth=false"</span>
+
+<span class="nv">reg-api-1._nmos-registration._tcp</span><span class="w">       </span><span class="nv">SRV</span><span class="w">     </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="nv">registration1.dns.nmos.tv.</span>
+<span class="nv">reg-api-1._nmos-registration._tcp</span><span class="w">       </span><span class="nv">TXT</span><span class="w">     </span><span class="s">"api_ver=v1.0,v1.1,v1.2,v1.3"</span><span class="w"> </span><span class="s">"api_proto=http"</span><span class="w"> </span><span class="s">"pri=0"</span><span class="w"> </span><span class="s">"api_auth=false"</span>
+
+<span class="c1">; Finally, the SRV and TXT for the Query API</span>
+<span class="nv">qry-api-1._nmos-query._tcp</span><span class="w">      </span><span class="nv">SRV</span><span class="w">     </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="nv">query1.dns.nmos.tv.</span>
+<span class="nv">qry-api-1._nmos-query._tcp</span><span class="w">      </span><span class="nv">TXT</span><span class="w">     </span><span class="s">"api_ver=v1.0,v1.1,v1.2,v1.3"</span><span class="w"> </span><span class="s">"api_proto=http"</span><span class="w"> </span><span class="s">"pri=0"</span><span class="w"> </span><span class="s">"api_auth=false"</span>
+</code></pre></div>
+<h2 id="dnsmasq">Dnsmasq</h2>
+<p>The following lines should be added to the <a href="http://www.thekelleys.org.uk/dnsmasq/doc.html">dnsmasq</a> configuration file, e.g. <code>/etc/dnsmasq.conf</code>.</p>
+<div class="highlight"><pre><span></span><code>; These lines indicate to clients that this server supports DNS Service Discovery
+; This example uses a domain of 'dns.nmos.tv'. We recommend using a subdomain of a domain name which you own.
+ptr-record=b._dns-sd._udp.dns.nmos.tv,dns.nmos.tv ; domain enumeration
+ptr-record=lb._dns-sd._udp.dns.nmos.tv,dns.nmos.tv ; legacy browse domain
+
+; There should be one PTR record for each instance of the service you wish to advertise.
+; Here we have one Registration API (_nmos-registration._tcp) and one Query API (_nmos-query._tcp)
+; From v1.3, the Registration API switches to use a new name (_nmos-register._tcp)
+ptr-record=_nmos-register._tcp.dns.nmos.tv,reg-api-1._nmos-register._tcp.dns.nmos.tv
+ptr-record=_nmos-registration._tcp.dns.nmos.tv,reg-api-1._nmos-registration._tcp.dns.nmos.tv
+ptr-record=_nmos-query._tcp.dns.nmos.tv,qry-api-1._nmos-query._tcp.dns.nmos.tv
+
+; Next we have a SRV and a TXT record corresponding to each PTR above, first the Registration API
+; The SRV links the PTR name to a resolvable DNS name (see hosts file below) and identify the port which the API runs on
+; (priority and weight are optional and omitted here)
+; The TXT records indicate additional metadata relevant to the IS-04 spec
+srv-host=reg-api-1._nmos-register._tcp.dns.nmos.tv,registration1.dns.nmos.tv,80
+txt-record=reg-api-1._nmos-register._tcp.dns.nmos.tv,"api_ver=v1.0,v1.1,v1.2,v1.3","api_proto=http","pri=0","api_auth=false"
+
+srv-host=reg-api-1._nmos-registration._tcp.dns.nmos.tv,registration1.dns.nmos.tv,80
+txt-record=reg-api-1._nmos-registration._tcp.dns.nmos.tv,"api_ver=v1.0,v1.1,v1.2,v1.3","api_proto=http","pri=0","api_auth=false"
+
+; Finally, the SRV and TXT for the Query API
+srv-host=qry-api-1._nmos-query._tcp.dns.nmos.tv,query1.dns.nmos.tv,80
+txt-record=qry-api-1._nmos-query._tcp.dns.nmos.tv,"api_ver=v1.0,v1.1,v1.2,v1.3","api_proto=http","pri=0","api_auth=false"
+</code></pre></div>
+<p>The A records may be configured in the dnsmasq additional hosts file (specified by the <code>-H,--addn-hosts=&lt;file&gt;</code> option).</p>
+<div class="highlight"><pre><span></span><code>192.168.200.5   registration1.dns.nmos.tv.
+192.168.200.6   query1.dns.nmos.tv.
+</code></pre></div>
+<p>The entries in the hosts file may omit the domain if two further lines are added to the configuration file:</p>
+<div class="highlight"><pre><span></span><code>expand-hosts
+domain=dns.nmos.tv
+</code></pre></div>
+<h2 id="tinydns">TinyDNS</h2>
+<p>The following is an example 'data' file for TinyDNS. Explanation of each line is provided via the comments.</p>
+<div class="highlight"><pre><span></span><code># SOA and related records.
+# This example uses a domain of 'dns.nmos.tv'. We recommend using a subdomain of a domain name which you control. Presumably this record is not necessary if there is a pre-existing nmos.tv SOA.
+.dns.nmos.tv:10.24.103.14
+
+# These PTR records indicate to clients that this server supports DNS Service Discovery
+^b._dns-sd._udp.dns.nmos.tv:dns.nmos.tv.
+^lb._dns-sd._udp.dns.nmos.tv:dns.nmos.tv.
+
+# These PTR records indicate to clients which service types this server may advertise.
+# Here we have one Registration API (_nmos-registration._tcp) and one Query API (_nmos-query._tcp)
+^_services._dns-sd._udp.dns.nmos.tv:_nmos-register._tcp.dns.nmos.tv.
+^_services._dns-sd._udp.dns.nmos.tv:_nmos-registration._tcp.dns.nmos.tv.
+^_services._dns-sd._udp.dns.nmos.tv:_nmos-query._tcp.dns.nmos.tv.
+
+# These lines result in A records the fully qualified DNS names to the IP addresses of the hosts which we'd like to discover as well as their corresponding PTR records.
++registration1.dns.nmos.tv:10.24.103.16
++query1.dns.nmos.tv:10.24.103.17
+
+# There should be one PTR record for each instance of the service you wish to advertise.
+# Here we have one Registration API (_nmos-registration._tcp) and one Query API (_nmos-query._tcp)
+^_nmos-register._tcp.dns.nmos.tv:reg-api-1._nmos-register._tcp.dns.nmos.tv.
+^_nmos-registration._tcp.dns.nmos.tv:reg-api-1._nmos-registration._tcp.dns.nmos.tv.
+^_nmos-query._tcp.dns.nmos.tv:qry-api-1._nmos-query._tcp.dns.nmos.tv.
+
+# Next we have a SRV and a TXT record corresponding to each PTR above, first the Registration API
+# The SRV record (type 33) links the PTR name to a resolvable DNS name (see hosts entries below) and identify the port which the API runs on. It was generated using https://anders.com/projects/sysadmin/djbdnsRecordBuilder/
+# (priority and weight are optional and omitted here)
+# The TXT records (type 16) indicate additional metadata relevant to the IS-04 spec. We can't use the bulit-in tinydns TXT record type because it does the wrong thing with the multiple TXT entries required by DNS-SD. These TXT records were hand-crafted. The octal escaped values, which represent the length of each text entry, will have to be modified if the api_ver or pri changes.
+:reg-api-1._nmos-registration._tcp.dns.nmos.tv:33:\000\000\000\000\014\212\015registration1\003dns\004nmos\002tv\000
+:reg-api-1._nmos-registration._tcp.dns.nmos.tv:16:\026api_ver=v1.0,v1.1,v1.2,v1.3\016api_proto=http\005pri=0
+
+# New values for the SRV and TXT records for v1.3 of IS-04. Also arbitrarily change the "pri" for the purposes of demonstration.
+:reg-api-1._nmos-register._tcp.dns.nmos.tv:33:\000\000\000\000\014\212\015registration1\003dns\004nmos\002tv\000
+:reg-api-1._nmos-register._tcp.dns.nmos.tv:16:\033api_ver=v1.0,v1.1,v1.2,v1.3\016api_proto=http\006pri=10
+
+# Finally, the SRV and TXT for the Query API
+:qry-api-1._nmos-query._tcp.dns.nmos.tv:33:\000\000\000\000\014\212\006query1\003dns\004nmos\002tv\000
+:qry-api-1._nmos-query._tcp.dns.nmos.tv:16:\026api_ver=v1.0,v1.1,v1.2,v1.3\016api_proto=http\005pri=0
+</code></pre></div>
+<h2 id="windows-dns">Windows DNS</h2>
+<p>Using Windows DNS Manager, in addition to the Host (A) records, the appropriate PTR, SRV and TXT records can be created as follows.</p>
+<p>For example, at the dns.nmos.tv zone, add the following records for the Registration API. T</p>
+<ul>
+<li>Pointer (PTR)</li>
+<li>Host IP address: _nmos-register._tcp <em>(yes, really; the user interface is confusing here, because DNS-SD isn't the most common use-case for a PTR record)</em></li>
+<li>Fully qualified domain name (FQDN): <em>(uneditable, but becomes)</em> _nmos-register._tcp.dns.nmos.tv</li>
+<li>Host name: reg-api-1._nmos-register._tcp.dns.nmos.tv</li>
+<li>Service Location (SRV)</li>
+<li>Domain: dns.nmos.tv</li>
+<li>Service: reg-api-1._nmos-register</li>
+<li>Protocol: _tcp</li>
+<li>Port number: 80</li>
+<li>Host offering this service: registration1.dns.nmos.tv</li>
+<li>Text (TXT)</li>
+<li>Record name: reg-api-1._nmos-register._tcp</li>
+<li>Fully qualified domain name (FQDN): reg-api-1._nmos-register._tcp.dns.nmos.tv</li>
+<li>Text (with one record per line and without quotation marks, as follows):
+    <div class="highlight"><pre><span></span><code>api_ver=v1.0,v1.1,v1.2,v1.3
+api_proto=http
+pri=0
+api_auth=false
+</code></pre></div></li>
+</ul>
+<p><img alt="Setting up the TXT record with Windows DNS" src="../images/Windows-DNS-TXT.png" /></p>
+<p>Repeat with <code>_nmos-registration</code> (assuming support for v1.2 and earlier is required).</p>
+<p>Repeat with <code>_nmos-query</code>.</p>
+<p>Similarly add <code>_services</code>, <code>b._dns-sd</code> and <code>lb._dns-sd</code> PTR records as seen in other examples.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":[],"redirect":null,"search":"../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"provider":"mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8dcc8e9c.min.js"></script>
+      
+        <script src="../javascripts/json-viewer.js"></script>
+      
+        <script src="../javascripts/amwa-branding.js"></script>
+      
+    
+  </body>
+</html>
