@@ -3,4 +3,16 @@
       <url>
         <loc>https://specs.amwa.tv/new/info-004/latest/</loc>
       </url>
+      <url>
+        <loc>https://specs.amwa.tv/new/info-004/latest/Introduction/</loc>
+      </url>
+      <url>
+        <loc>https://specs.amwa.tv/new/info-004/latest/Example%20HOWTO/</loc>
+      </url>
+      <url>
+        <loc>https://specs.amwa.tv/new/info-004/latest/Other%20DNS%20Servers/</loc>
+      </url>
+      <url>
+        <loc>https://specs.amwa.tv/new/info-004/latest/Further%20Information/</loc>
+      </url>
 </urlset>
