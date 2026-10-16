@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       <url>
-        <loc>https://specs.amwa.tv/new/info-004/latest/</loc>
+        <loc>https://specs.amwa.tv/info-004/latest/</loc>
       </url>
       <url>
-        <loc>https://specs.amwa.tv/new/info-004/latest/Introduction/</loc>
+        <loc>https://specs.amwa.tv/info-004/latest/404/</loc>
       </url>
       <url>
-        <loc>https://specs.amwa.tv/new/info-004/latest/Example%20HOWTO/</loc>
+        <loc>https://specs.amwa.tv/info-004/latest/Example%20HOWTO/</loc>
       </url>
       <url>
-        <loc>https://specs.amwa.tv/new/info-004/latest/Other%20DNS%20Servers/</loc>
+        <loc>https://specs.amwa.tv/info-004/latest/Further%20Information/</loc>
       </url>
       <url>
-        <loc>https://specs.amwa.tv/new/info-004/latest/Further%20Information/</loc>
+        <loc>https://specs.amwa.tv/info-004/latest/Introduction/</loc>
+      </url>
+      <url>
+        <loc>https://specs.amwa.tv/info-004/latest/Other%20DNS%20Servers/</loc>
       </url>
 </urlset>
