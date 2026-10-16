@@ -1,8 +1,6 @@
 name: Documentation (Zensical)
 run-name: ${{ case(github.event_name == 'push', '', github.event_name == 'release', format('Release - {0}', github.event.release.tag_name), format('Documentation - {0}', inputs.ref || github.ref_name)) }}
 
-# Experimental shared-toolkit rendering. The existing render.yml workflow and
-# .render pipeline remain active until the new output has been accepted.
 on:
   push:
     branches:
@@ -28,7 +26,9 @@ jobs:
     with:
       versioned: false
       site-name: info-004
-      public-docs-root: https://specs.amwa.tv/new/info-004
+      public-docs-root: https://specs.amwa.tv/info-004
+      legacy-mapping: .docs/legacy-mappings.csv
+      upload-prefix: ''
       source-ref: ${{ inputs.ref || github.ref_name }}
       # Pin this to a released toolkit tag or commit SHA once available.
       toolkit-ref: main
